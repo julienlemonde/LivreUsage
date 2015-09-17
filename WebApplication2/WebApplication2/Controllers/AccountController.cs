@@ -19,11 +19,11 @@ namespace WebApplication2.Controllers
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
         }
-
+        //Desactivation du alphanumericUserNames source : http://forums.asp.net/t/1976832.aspx?User+name+boaz+voila+fr+is+invalid+can+only+contain+letters+or+digits+
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             UserManager = userManager;
-            
+            UserManager.UserValidator = new UserValidator<ApplicationUser>(UserManager) { AllowOnlyAlphanumericUserNames = false };
         }
       
 
