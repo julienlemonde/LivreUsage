@@ -99,6 +99,46 @@ namespace WebApplication2.Controllers
             return View(model);
         }
 
+
+
+
+        //
+        // GET: /Account/RegisterGestionnaire
+        [AllowAnonymous]
+        public ActionResult RegisterGestionnaire()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/RegisterGestionnaire
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterGestionnaire(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser() { UserName = model.Username, Telephone = model.Telephone };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    AddErrors(result);
+                }
+            }
+
+            // Si nous sommes arrivés là, un échec s’est produit. Réafficher le formulaire
+            return View(model);
+        }
+
+
+
+
         //
         // POST: /Account/Disassociate
         [HttpPost]
