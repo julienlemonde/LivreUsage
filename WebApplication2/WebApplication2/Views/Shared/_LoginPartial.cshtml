@@ -4,11 +4,13 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
-
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Ajouter livres", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Ajouter livres" })
-        </li>
+             @Html.ActionLink("Ajouter livres", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Ajouter livres" })
+              
+                 
+       
+         </li>
         <li>
             @Html.ActionLink("Bonjour " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Administrer" })
         </li>

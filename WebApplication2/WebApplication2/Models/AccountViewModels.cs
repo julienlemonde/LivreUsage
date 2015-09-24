@@ -27,6 +27,16 @@ namespace WebApplication2.Models
         [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et le mot de passe de confirmation ne correspondent pas.")]
         public string ConfirmPassword { get; set; }
     }
+    public class CoopViewModel
+    {
+        [Required]
+        [Display(Name = "Nom de la coopérative")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "L'adresse de la coopérative")]
+        public string Adresse { get; set; }
+    }
 
     public class LoginViewModel
     {

@@ -10,6 +10,7 @@ namespace WebApplication2.Models
         
 
     }
+    
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -17,5 +18,7 @@ namespace WebApplication2.Models
             : base("DefaultConnection")
         {
         }
+
+      
     }
 }
