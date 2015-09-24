@@ -23,6 +23,7 @@ namespace WebApplication2.Controllers
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             UserManager = userManager;
+            
             UserManager.UserValidator = new UserValidator<ApplicationUser>(UserManager) { AllowOnlyAlphanumericUserNames = false };
         }
       
@@ -82,10 +83,13 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationDbContext dbContext = new ApplicationDbContext();
                 var user = new ApplicationUser() { UserName = model.Username, Telephone = model.Telephone };
+                user.PasswordHash = model.Password;
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id,"Etudiant" );
                     await SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -121,21 +125,57 @@ namespace WebApplication2.Controllers
             {
                 var user = new ApplicationUser() { UserName = model.Username, Telephone = model.Telephone };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
+                    
+                    UserManager.AddToRole(user.Id, "Gestionnaire");
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Create", "Coops");
+                }
+                else
+                {
+                    AddErrors(result);
+                }
+             
+            }
+            // Si nous sommes arrivés là, un échec s’est produit. Réafficher le formulaire
+            return View(model);
+        }
+             // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult RegisterCoop()
+        {
+            return View();
+        }
+        //
+        // POST: /Account/RegisterGestionnaire
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterCoop(CoopViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser() { UserName = model.Name, Telephone = model.Adresse };
+                var result = await UserManager.CreateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    
+                    UserManager.AddToRole(user.Id, "Gestionnaire");
+                    await SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("RegisterCoop", "Account");
                 }
                 else
                 {
                     AddErrors(result);
                 }
             }
-
             // Si nous sommes arrivés là, un échec s’est produit. Réafficher le formulaire
             return View(model);
         }
-
+       
 
 
 

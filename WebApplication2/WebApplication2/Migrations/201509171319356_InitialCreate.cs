@@ -15,7 +15,7 @@ namespace WebApplication2.Migrations
                         Name = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.AspNetUsers",
                 c => new
@@ -40,7 +40,7 @@ namespace WebApplication2.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.User_Id, cascadeDelete: true)
                 .Index(t => t.User_Id);
-            
+           
             CreateTable(
                 "dbo.AspNetUserLogins",
                 c => new

@@ -1,0 +1,48 @@
+﻿
+@model WebApplication2.Models.Coop
+
+@{
+    ViewBag.Title = "Ajouter la coopérative au système";
+}
+
+
+<h2>Ajouter la coopérative au système</h2>
+
+@using (Html.BeginForm())
+{
+   
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Coop</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Nom, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Nom, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Adresse, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Adresse, new { @class = "form-control" })
+            </div>
+        </div>
+     
+    
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Ajouter la Coopérative" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
