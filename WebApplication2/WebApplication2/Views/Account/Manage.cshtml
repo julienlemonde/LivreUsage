@@ -19,8 +19,14 @@
         }
 
         <section id="externalLogins">
-            @Html.Action("RemoveAccountList")
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+          @if(User.IsInRole("Gestionnaire"))
+          {
+            <p>Vous êtes connectés en tant que gestionnaire</p>  
+          }
+          else
+            {
+              <p>Vous êtes connectés en tant qu'étudiant</p>
+            }
         </section>
     </div>
 </div>
