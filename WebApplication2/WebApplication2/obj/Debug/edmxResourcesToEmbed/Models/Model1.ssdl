@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Livres">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Nom" Type="nvarchar" MaxLength="50" />
+    <Property Name="Auteur" Type="nvarchar" MaxLength="50" />
+    <Property Name="NbrPages" Type="nvarchar" MaxLength="50" />
+    <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Etat" Type="nvarchar" MaxLength="50" />
+    <Property Name="IdCoop" Type="int" />
+    <Property Name="CodeIdentification" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="Livres" EntityType="Self.Livres" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

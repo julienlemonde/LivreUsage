@@ -1,0 +1,79 @@
+﻿@model WebApplication2.Models.MasterLivreModel
+
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Livres</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.livres.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.livres.Nom, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.livres.Nom)
+                @Html.ValidationMessageFor(model => model.livres.Nom)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.livres.Auteur, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.livres.Auteur)
+                @Html.ValidationMessageFor(model => model.livres.Auteur)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.livres.NbrPages, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.livres.NbrPages)
+                @Html.ValidationMessageFor(model => model.livres.NbrPages)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.livres.Prix, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.livres.Prix)
+                @Html.ValidationMessageFor(model => model.livres.Prix)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.livres.IdCoop, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.livres.IdCoop)
+                @Html.ValidationMessageFor(model => model.livres.IdCoop)
+            </div>
+        </div>
+    
+        <div class="form-group">
+            @Html.LabelFor(model => model.livreinventaire.Etat, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.livreinventaire.Etat)
+                @Html.ValidationMessageFor(model => model.livreinventaire.Etat)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

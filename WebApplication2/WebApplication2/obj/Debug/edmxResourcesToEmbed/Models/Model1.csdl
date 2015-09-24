@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Livres">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Auteur" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NbrPages" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IdCoop" Type="Int32" />
+    <Property Name="CodeIdentification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="Entities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Livres" EntityType="Self.Livres" />
+  </EntityContainer>
+</Schema>

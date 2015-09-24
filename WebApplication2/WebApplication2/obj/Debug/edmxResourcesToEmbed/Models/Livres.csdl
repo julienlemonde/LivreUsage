@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LivresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Coop">
+    <Key>
+      <PropertyRef Name="Nom" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NomGestionnaire" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="LivreInventaire">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CodeIdentification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Quantite" Type="Int32" Nullable="false" />
+    <Property Name="Cooperative" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Livres">
+    <Key>
+      <PropertyRef Name="CodeIdentification" />
+    </Key>
+    <Property Name="Id" Type="Int32" />
+    <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Auteur" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NbrPages" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="IdCoop" Type="Int32" />
+    <Property Name="CodeIdentification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="Cooperative" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Coop" EntityType="Self.Coop" />
+    <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" />
+    <EntitySet Name="Livres" EntityType="Self.Livres" />
+  </EntityContainer>
+</Schema>

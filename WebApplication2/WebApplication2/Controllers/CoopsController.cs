@@ -52,8 +52,9 @@ namespace WebApplication2.Controllers
             if (ModelState.IsValid)
             {
 
-                var result = db.Coop.Find(coop.Nom);
-                if (result.Nom != coop.Nom)
+                Coop result = db.Coop.Find(coop.Nom);
+               
+                if (result == null)
                 {
                     coop.Id = db.Coop.Count() + 1;
                     db.Coop.Add(coop);

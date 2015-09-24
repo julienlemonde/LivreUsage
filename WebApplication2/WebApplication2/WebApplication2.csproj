@@ -166,7 +166,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CoopsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LivreController.cs" />
+    <Compile Include="Controllers\LivresController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -192,8 +192,32 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Coop.cs" />
+    <Compile Include="Models\Coop.cs">
+      <DependentUpon>Livres.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LivreInventaire.cs">
+      <DependentUpon>Livres.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Livres.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Livres.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Livres.cs">
+      <DependentUpon>Livres.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Livres.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Livres.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Livres1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Livres.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MasterLivreModel.cs" />
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -207,6 +231,23 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="Models\Livres.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Livres.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Livres.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Livres.edmx</DependentUpon>
+      <LastGenOutput>Livres.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Livres.edmx.diagram">
+      <DependentUpon>Livres.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Livres.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Livres.edmx</DependentUpon>
+      <LastGenOutput>Livres1.cs</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -251,11 +292,16 @@
     <Content Include="Views\Coops\Details.cshtml" />
     <Content Include="Views\Coops\Edit.cshtml" />
     <Content Include="Views\Coops\Index.cshtml" />
+    <Content Include="Views\Livres\Create.cshtml" />
+    <Content Include="Views\Livres\Delete.cshtml" />
+    <Content Include="Views\Livres\Details.cshtml" />
+    <Content Include="Views\Livres\Edit.cshtml" />
+    <Content Include="Views\Livres\Index.cshtml" />
+    <Content Include="Views\Livres\AjouterLivre.cshtml" />
+    <Content Include="Views\Livres\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Livres\" />
-    <Folder Include="Views\Livre\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -280,6 +326,9 @@
     <EmbeddedResource Include="Migrations\201509222004468_ETS.resx">
       <DependentUpon>201509222004468_ETS.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

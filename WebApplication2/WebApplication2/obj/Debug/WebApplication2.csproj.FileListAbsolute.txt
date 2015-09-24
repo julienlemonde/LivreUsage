@@ -382,7 +382,6 @@ J:\LivreUsage\WebApplication2\WebApplication2\bin\fr\Microsoft.Owin.Security.Fac
 J:\LivreUsage\WebApplication2\WebApplication2\bin\fr\Microsoft.Owin.Security.Google.resources.dll
 J:\LivreUsage\WebApplication2\WebApplication2\bin\fr\Microsoft.Owin.Security.Twitter.resources.dll
 J:\LivreUsage\WebApplication2\WebApplication2\bin\fr\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
-J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csprojResolveAssemblyReference.cache
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.InitialCreate.resources
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.numtel.resources
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.NomCoop.resources
@@ -391,3 +390,4 @@ J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migratio
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csproj.GenerateResource.Cache
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.dll
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.pdb
+J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csprojResolveAssemblyReference.cache

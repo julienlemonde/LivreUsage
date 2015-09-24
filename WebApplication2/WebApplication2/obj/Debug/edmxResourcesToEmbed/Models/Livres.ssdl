@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Coop">
+    <Key>
+      <PropertyRef Name="Nom" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Adresse" Type="nvarchar" MaxLength="50" />
+    <Property Name="NomGestionnaire" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="LivreInventaire">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CodeIdentification" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Etat" Type="nvarchar" MaxLength="50" />
+    <Property Name="Quantite" Type="int" Nullable="false" />
+    <Property Name="Cooperative" Type="int" />
+  </EntityType>
+  <EntityType Name="Livres">
+    <Key>
+      <PropertyRef Name="CodeIdentification" />
+    </Key>
+    <Property Name="Id" Type="int" />
+    <Property Name="Nom" Type="nvarchar" MaxLength="50" />
+    <Property Name="Auteur" Type="nvarchar" MaxLength="50" />
+    <Property Name="NbrPages" Type="nvarchar" MaxLength="50" />
+    <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="IdCoop" Type="int" />
+    <Property Name="CodeIdentification" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="LivresModelStoreContainer">
+    <EntitySet Name="Coop" EntityType="Self.Coop" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Livres" EntityType="Self.Livres" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

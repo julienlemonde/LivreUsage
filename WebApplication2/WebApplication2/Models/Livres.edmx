@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Coop">
+          <Key>
+            <PropertyRef Name="Nom" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Adresse" Type="nvarchar" MaxLength="50" />
+          <Property Name="NomGestionnaire" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LivreInventaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CodeIdentification" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Etat" Type="nvarchar" MaxLength="50" />
+          <Property Name="Quantite" Type="int" Nullable="false" />
+          <Property Name="Cooperative" Type="int" />
+        </EntityType>
+        <EntityType Name="Livres">
+          <Key>
+            <PropertyRef Name="CodeIdentification" />
+          </Key>
+          <Property Name="Id" Type="int" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" />
+          <Property Name="Auteur" Type="nvarchar" MaxLength="50" />
+          <Property Name="NbrPages" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="IdCoop" Type="int" />
+          <Property Name="CodeIdentification" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="LivresModelStoreContainer">
+          <EntitySet Name="Coop" EntityType="Self.Coop" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Livres" EntityType="Self.Livres" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LivresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Coop">
+          <Key>
+            <PropertyRef Name="Nom" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NomGestionnaire" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LivreInventaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CodeIdentification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Quantite" Type="Int32" Nullable="false" />
+          <Property Name="Cooperative" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Livres">
+          <Key>
+            <PropertyRef Name="CodeIdentification" />
+          </Key>
+          <Property Name="Id" Type="Int32" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Auteur" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NbrPages" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="IdCoop" Type="Int32" />
+          <Property Name="CodeIdentification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="Cooperative" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Coop" EntityType="Self.Coop" />
+          <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" />
+          <EntitySet Name="Livres" EntityType="Self.Livres" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LivresModelStoreContainer" CdmEntityContainer="Cooperative">
+          <EntitySetMapping Name="Coop">
+            <EntityTypeMapping TypeName="LivresModel.Coop">
+              <MappingFragment StoreEntitySet="Coop">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+                <ScalarProperty Name="NomGestionnaire" ColumnName="NomGestionnaire" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LivreInventaire">
+            <EntityTypeMapping TypeName="LivresModel.LivreInventaire">
+              <MappingFragment StoreEntitySet="LivreInventaire">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+                <ScalarProperty Name="Etat" ColumnName="Etat" />
+                <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+                <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Livres">
+            <EntityTypeMapping TypeName="LivresModel.Livres">
+              <MappingFragment StoreEntitySet="Livres">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Auteur" ColumnName="Auteur" />
+                <ScalarProperty Name="NbrPages" ColumnName="NbrPages" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="IdCoop" ColumnName="IdCoop" />
+                <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
