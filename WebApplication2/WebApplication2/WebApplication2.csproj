@@ -229,6 +229,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\Livres.edmx.sql" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\Livres.edmx">
@@ -299,6 +300,8 @@
     <Content Include="Views\Livres\Index.cshtml" />
     <Content Include="Views\Livres\AjouterLivre.cshtml" />
     <Content Include="Views\Livres\Search.cshtml" />
+    <Content Include="Views\Shared\ErrorCoop.cshtml" />
+    <Content Include="Views\Livres\EditEtat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

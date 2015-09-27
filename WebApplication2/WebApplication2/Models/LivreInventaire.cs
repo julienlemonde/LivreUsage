@@ -19,5 +19,6 @@ namespace WebApplication2.Models
         public string Etat { get; set; }
         public int Quantite { get; set; }
         public Nullable<int> Cooperative { get; set; }
+        public Boolean ContinuerAjout { get; set; }
     }
 }

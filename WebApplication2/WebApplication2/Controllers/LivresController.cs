@@ -15,12 +15,14 @@ namespace WebApplication2.Controllers
         private Cooperative db = new Cooperative();
 
         // GET: /Livres/
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Livres.ToList());
         }
 
         // GET: /Livres/Details/5
+        [Authorize]
         public ActionResult Details(String id)
         {
             if (id == null)
@@ -62,7 +64,8 @@ namespace WebApplication2.Controllers
                  }
                  else
                  {
-                     return RedirectToAction("Create", "Livres");
+                    ViewBag.Code = livres.CodeIdentification;
+                     return RedirectToAction("Create", "Livres",new { id = livres.CodeIdentification});
                  }
             }
 
@@ -70,9 +73,21 @@ namespace WebApplication2.Controllers
         }
         // GET: /Livres/Create
         [Authorize]
-        public ActionResult Create()
+        public ActionResult Create(String id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Livres livres = new Livres();
+            livres.CodeIdentification = id;
+            if (livres == null)
+            {
+                return HttpNotFound();
+            }
+            return View(livres);
+
+           
         }
 
         // POST: /Livres/Create
@@ -81,28 +96,31 @@ namespace WebApplication2.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nom,Auteur,NbrPages,Prix,Etat,IdCoop,CodeIdentification")] Livres livres)
+        public ActionResult Create([Bind(Include = "Nom,Auteur,NbrPages,Prix,Etat,IdCoop,CodeIdentification")] Livres livres)
         {
             if (ModelState.IsValid)
             {
-                Livres result = db.Livres.Find(livres.CodeIdentification);
+                //livres.Id = int.Parse(livres.CodeIdentification.Replace("-", ""));
+                Livres result = db.Livres.Where(i=> i.CodeIdentification == livres.CodeIdentification).FirstOrDefault();
 
                 if (result != null)
                 {
 
-                    return RedirectToAction("Details/" + livres.Id, "Livres");
+                    return RedirectToAction("Details/" + livres.CodeIdentification, "Livres");
                 }
                 else
                 {
+                    livres.Id = db.Livres.Count() + 1;
                     db.Livres.Add(livres);
                     db.SaveChanges();
                 }
             }
 
-            return View(livres);
+            return RedirectToAction("EditEtat", "Livres", new { id = livres.CodeIdentification });
         }
 
         // GET: /Livres/Edit/5
+        [Authorize]
         public ActionResult Edit(String id)
         {
             if (id == null)
@@ -110,31 +128,128 @@ namespace WebApplication2.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             MasterLivreModel livres = new MasterLivreModel();
+            livres.livres = new Livres();
+            livres.livreinventaire = new LivreInventaire();
             livres.livres = db.Livres.Find(id);
-            if (livres.livres == null)
+            if (livres == null)
             {
                 return HttpNotFound();
             }
-            return View(livres);
+            return View(livres.livres);
         }
 
         // POST: /Livres/Edit/5
         // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,Nom,Auteur,NbrPages,Prix,IdCoop,CodeIdentification")] MasterLivreModel livres)
+        public ActionResult Edit([Bind(Include="Nom,Auteur,NbrPages,Prix,IdCoop,CodeIdentification")] Livres livres)
         {
+           
             if (ModelState.IsValid)
             {
-                db.Entry(livres.livres).State = EntityState.Modified;
-                db.LivreInventaire.Add(livres.livreinventaire);
+                LivreInventaire LivreInv = new LivreInventaire();
+                LivreInv = db.LivreInventaire.FirstOrDefault(i => i.CodeIdentification == livres.CodeIdentification);
+                if(LivreInv == null)
+                {
+                    LivreInv = new LivreInventaire();
+                    LivreInv.CodeIdentification = livres.CodeIdentification;
+                    LivreInv.Cooperative = livres.IdCoop;
+                    LivreInv.Quantite = 1;
+                    LivreInv.Id = db.LivreInventaire.Count() + 1;
+                }
+               
+               
+                db.Entry(livres).State = EntityState.Modified;
+               // db.LivreInventaire.Add(livres.livreinventaire);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("EditEtat","Livres", new { id = LivreInv.CodeIdentification });
             }
             return View(livres);
         }
+        // GET: /Livres/Edit/5
+        [Authorize]
+        public ActionResult EditEtat(String id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MasterLivreModel livres = new MasterLivreModel();
+            livres.livreinventaire = new LivreInventaire();
+           
+            var dictionnaire = new Dictionary<string, string>
+            {
+                {"Comme Neuf", "Comme Neuf" },
+                { "Moyennement Abîmé", "Moyennement Abîmé" },
+                {"Très Aîmé","Très Aîmé" }
 
+            };
+            ViewBag.SelectList = new SelectList(dictionnaire, "Key", "Value");
+            
+
+            livres.livres = new Livres();
+            string code = db.Livres.Find(id).CodeIdentification;
+            livres.livreinventaire.CodeIdentification = code;
+            if (livres.livres == null)
+            {
+                return HttpNotFound();
+            }
+            return View(livres.livreinventaire);
+        }
+        // POST: /Livres/Edit/5
+        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
+        // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditEtat([Bind(Include = "CodeIdentification,Etat,ContinuerAjout")] LivreInventaire livres)
+        {
+          
+            if (ModelState.IsValid)
+            {
+                LivreInventaire LivreInv = new LivreInventaire();
+               
+                
+                Livres LivresDeCoop = db.Livres.FirstOrDefault(i => i.CodeIdentification == livres.CodeIdentification);
+                LivreInv = db.LivreInventaire.Where(i => i.CodeIdentification == livres.CodeIdentification && i.Etat == livres.Etat).FirstOrDefault();
+                int coopId = LivresDeCoop.IdCoop.Value;
+                if (LivreInv == null)
+                {
+                    livres.Id = db.LivreInventaire.Count() + 1;
+                    livres.Quantite = 1;
+                    livres.Cooperative = coopId;
+                    db.LivreInventaire.Add(livres);
+                    db.SaveChanges();
+                }
+                else
+                {
+                   if(LivreInv.Etat.ToLower() == livres.Etat.ToLower())
+                    {
+                        
+                        LivreInv.Quantite++;
+                        db.Entry(LivreInv).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                   else
+                    {
+                        livres.Id = db.LivreInventaire.Count() + 1;
+                        livres.Cooperative = coopId;
+                        livres.Quantite = 1;
+                        db.LivreInventaire.Add(livres);
+                        db.SaveChanges();
+                        
+                    }
+                }
+                
+            }
+            if (livres.ContinuerAjout == true)
+                return RedirectToAction("Search", "Livres");
+            else
+                return RedirectToAction("Index","Home");
+        }
+        
         // GET: /Livres/Delete/5
         public ActionResult Delete(int? id)
         {

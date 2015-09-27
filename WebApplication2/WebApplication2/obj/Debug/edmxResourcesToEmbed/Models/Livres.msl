@@ -2,17 +2,17 @@
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="LivresModelStoreContainer" CdmEntityContainer="Cooperative">
     <EntitySetMapping Name="Coop">
-      <EntityTypeMapping TypeName="LivresModel.Coop">
+      <EntityTypeMapping TypeName="IsTypeOf(LivresModel.Coop)">
         <MappingFragment StoreEntitySet="Coop">
-          <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Adresse" ColumnName="Adresse" />
           <ScalarProperty Name="NomGestionnaire" ColumnName="NomGestionnaire" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="LivreInventaire">
-      <EntityTypeMapping TypeName="LivresModel.LivreInventaire">
+      <EntityTypeMapping TypeName="IsTypeOf(LivresModel.LivreInventaire)">
         <MappingFragment StoreEntitySet="LivreInventaire">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
@@ -23,15 +23,15 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Livres">
-      <EntityTypeMapping TypeName="LivresModel.Livres">
+      <EntityTypeMapping TypeName="IsTypeOf(LivresModel.Livres)">
         <MappingFragment StoreEntitySet="Livres">
+          <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Nom" ColumnName="Nom" />
           <ScalarProperty Name="Auteur" ColumnName="Auteur" />
           <ScalarProperty Name="NbrPages" ColumnName="NbrPages" />
           <ScalarProperty Name="Prix" ColumnName="Prix" />
           <ScalarProperty Name="IdCoop" ColumnName="IdCoop" />
-          <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

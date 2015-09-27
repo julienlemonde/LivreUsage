@@ -14,12 +14,12 @@
         <h4>Livres</h4>
         <hr />
         @Html.ValidationSummary(true)
-        
+        @Html.HiddenFor(m => m.Id)
         <div class="form-group">
             @Html.LabelFor(model => model.CodeIdentification, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CodeIdentification)
-                @Html.ValidationMessageFor(model => model.Id)
+                @Html.ValidationMessageFor(model => model.CodeIdentification)
             </div>
         </div>
 
@@ -55,13 +55,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Etat, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Etat)
-                @Html.ValidationMessageFor(model => model.Etat)
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.IdCoop, new { @class = "control-label col-md-2" })
@@ -72,13 +65,6 @@
         </div>
             
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CodeIdentification, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CodeIdentification)
-                @Html.ValidationMessageFor(model => model.CodeIdentification)
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
