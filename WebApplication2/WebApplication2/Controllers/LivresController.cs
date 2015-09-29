@@ -178,15 +178,9 @@ namespace WebApplication2.Controllers
             }
             MasterLivreModel livres = new MasterLivreModel();
             livres.livreinventaire = new LivreInventaire();
-           
-            var dictionnaire = new Dictionary<string, string>
-            {
-                {"Comme Neuf", "Comme Neuf" },
-                { "Moyennement Abîmé", "Moyennement Abîmé" },
-                {"Très Aîmé","Très Aîmé" }
 
-            };
-            ViewBag.SelectList = new SelectList(dictionnaire, "Key", "Value");
+            
+           
             
 
             livres.livres = new Livres();
@@ -204,14 +198,14 @@ namespace WebApplication2.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult EditEtat([Bind(Include = "CodeIdentification,Etat,ContinuerAjout")] LivreInventaire livres)
+        public ActionResult EditEtat([Bind(Include = "CodeIdentification,Etat,ContinuerAjout,typeID,ValeurEtat")] LivreInventaire livres)
         {
           
             if (ModelState.IsValid)
             {
                 LivreInventaire LivreInv = new LivreInventaire();
-               
-                
+                livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
+
                 Livres LivresDeCoop = db.Livres.FirstOrDefault(i => i.CodeIdentification == livres.CodeIdentification);
                 LivreInv = db.LivreInventaire.Where(i => i.CodeIdentification == livres.CodeIdentification && i.Etat == livres.Etat).FirstOrDefault();
                 int coopId = LivresDeCoop.IdCoop.Value;

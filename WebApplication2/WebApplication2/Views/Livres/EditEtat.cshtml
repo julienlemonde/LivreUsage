@@ -9,7 +9,8 @@
 
 @using (Html.BeginForm())
 {
-
+    @Html.HiddenFor(m => m.Etat)
+    @Html.HiddenFor(m => m.ValeurEtat)
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -27,8 +28,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Etat, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Etat, new { @class = "form-control" })
-               <!-- Html.DropDownListFor(model => model.ValeurDesEtats, (SelectList)ViewBag.selectList)-->
+            
+               @Html.DropDownListFor(model => model.typeId,new SelectList(Model.ValeurEtat,"Etatid","name"))
             </div>
         </div>
 
@@ -48,6 +49,7 @@
         </div>
     </div>
 }
+
 
 <div>
     @Html.ActionLink("Back to List", "Index")
