@@ -41,24 +41,24 @@
                 @Html.ValidationMessageFor(model => model.NbrPages)
             </div>
         </div>
-        @if (User.IsInRole("Gestionnaire"))
-        {
+       
         <div class="form-group">
             @Html.LabelFor(model => model.Prix, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Prix)
-                @Html.ValidationMessageFor(model => model.Prix)
+                @if (User.IsInRole("Gestionnaire"))
+                       {
+                         @Html.EditorFor(model => model.Prix)
+                         @Html.ValidationMessageFor(model => model.Prix)
+                        }
+                @if(User.IsInRole("Etudiant"))
+                {
+                    @Html.DisplayFor(model => model.Prix)
+                }
             </div>
         </div>
-        }
+        
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IdCoop, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IdCoop)
-                @Html.ValidationMessageFor(model => model.IdCoop)
-            </div>
-        </div>
+       
         @Html.HiddenFor(model => model.CodeIdentification)
         
 
@@ -69,6 +69,7 @@
         </div>
     </div>
 }
+
 
 <div>
     @Html.ActionLink("Back to List", "Index")

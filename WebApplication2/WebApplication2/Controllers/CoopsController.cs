@@ -12,7 +12,7 @@ namespace WebApplication2.Controllers
 {
     public class CoopsController : Controller
     {
-        private CoopModel db = new CoopModel();
+        private Cooperative db = new Cooperative();
 
         // GET: Coops
         [Authorize(Roles = "Gestionnaire")]
@@ -29,7 +29,7 @@ namespace WebApplication2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Coop coop = db.Coop.Find(id);
+            Coop coop = db.Coop.Where(i => i.Id == id).FirstOrDefault();
             if (coop == null)
             {
                 return HttpNotFound();
@@ -50,11 +50,10 @@ namespace WebApplication2.Controllers
         [HttpPost]
         [Authorize(Roles = "Gestionnaire")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nom,Adresse")] Coop coop)
+        public ActionResult Create([Bind(Include = "Id,Nom,Adresse, NomGestionnaire")] Coop coop)
         {
             if (ModelState.IsValid)
             {
-
                 Coop result = db.Coop.FirstOrDefault(i => i.Nom == coop.Nom);
        
                 if (result == null)

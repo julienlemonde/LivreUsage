@@ -9,5 +9,6 @@ namespace WebApplication2.Models
     {
         public Livres livres { get; set; }
         public LivreInventaire livreinventaire { get; set; }
+        public Coop Coop { get; set; }
     }
 }

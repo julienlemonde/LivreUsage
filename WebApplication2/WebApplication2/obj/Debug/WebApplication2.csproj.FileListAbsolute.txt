@@ -391,3 +391,4 @@ J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csproj.G
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.dll
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.pdb
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csprojResolveAssemblyReference.cache
+C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.coopid.resources

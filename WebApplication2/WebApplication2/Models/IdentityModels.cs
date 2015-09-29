@@ -7,7 +7,8 @@ namespace WebApplication2.Models
     {
         public string Telephone { get; set; }
         public string Courriel { get; set; }
-        
+        public int coopid { get; set; }
+
 
     }
     

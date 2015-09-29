@@ -15,6 +15,7 @@ namespace WebApplication2.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        Cooperative db = new Cooperative();
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -71,6 +72,7 @@ namespace WebApplication2.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.ChoixCoop = new SelectList(db.Coop.ToList(), "Id", "Nom");
             return View();
         }
 
@@ -84,7 +86,7 @@ namespace WebApplication2.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationDbContext dbContext = new ApplicationDbContext();
-                var user = new ApplicationUser() { UserName = model.Username, Telephone = model.Telephone };
+                var user = new ApplicationUser() { UserName = model.Username, Telephone = model.Telephone, coopid = model.coopid };
                 user.PasswordHash = model.Password;
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

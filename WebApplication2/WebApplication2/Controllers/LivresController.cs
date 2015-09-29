@@ -16,7 +16,7 @@ namespace WebApplication2.Controllers
 
         // GET: /Livres/
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(string code)
         {
             return View(db.Livres.ToList());
         }
@@ -31,6 +31,8 @@ namespace WebApplication2.Controllers
             }
             MasterLivreModel livres = new MasterLivreModel();
             livres.livres = db.Livres.Find(id);
+            livres.Coop = new Coop();
+            livres.Coop.Nom = db.Coop.Where(i => i.Id == livres.livres.IdCoop).FirstOrDefault().Nom;
             if (livres.livres == null)
             {
                 return HttpNotFound();
@@ -68,7 +70,7 @@ namespace WebApplication2.Controllers
                      return RedirectToAction("Create", "Livres",new { id = livres.CodeIdentification});
                  }
             }
-
+            
             return View(livres);
         }
         // GET: /Livres/Create
@@ -144,7 +146,7 @@ namespace WebApplication2.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Nom,Auteur,NbrPages,Prix,IdCoop,CodeIdentification")] Livres livres)
+        public ActionResult Edit([Bind(Include="Nom,Auteur,NbrPages,Prix,CodeIdentification")] Livres livres)
         {
            
             if (ModelState.IsValid)

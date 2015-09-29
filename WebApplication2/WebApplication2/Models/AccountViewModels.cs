@@ -79,6 +79,8 @@ namespace WebApplication2.Models
         [DataType(DataType.Text)]
         [Display(Name = "Nom Coop")]
         public string NomCoop { get; set; }
+
+        public int coopid { get; set; }
     }
 
     
