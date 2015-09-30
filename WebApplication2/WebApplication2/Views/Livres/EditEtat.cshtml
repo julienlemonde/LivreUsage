@@ -10,6 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(m => m.Etat)
+    @Html.HiddenFor(m => m.Cooperative)
     @Html.HiddenFor(m => m.ValeurEtat)
     @Html.AntiForgeryToken()
 
@@ -32,7 +33,6 @@
                @Html.DropDownListFor(model => model.typeId,new SelectList(Model.ValeurEtat,"Etatid","name"))
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.ContinuerAjout, new { @class = "control-label col-md-2" })
             <div class="col-md-10">

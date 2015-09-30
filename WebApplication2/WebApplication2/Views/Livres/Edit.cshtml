@@ -11,7 +11,7 @@
 {
 
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Livres</h4>
         <hr />
@@ -41,24 +41,41 @@
                 @Html.ValidationMessageFor(model => model.NbrPages)
             </div>
         </div>
-       
+
         <div class="form-group">
             @Html.LabelFor(model => model.Prix, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @if (User.IsInRole("Gestionnaire"))
-                       {
-                         @Html.EditorFor(model => model.Prix)
-                         @Html.ValidationMessageFor(model => model.Prix)
-                        }
-                @if(User.IsInRole("Etudiant"))
+                {
+                    @Html.EditorFor(model => model.Prix)
+                    @Html.ValidationMessageFor(model => model.Prix)
+                }
+                @if (User.IsInRole("Etudiant"))
                 {
                     @Html.DisplayFor(model => model.Prix)
+                    @Html.HiddenFor(m => m.Prix)
                 }
             </div>
         </div>
-        
+        <div class="form-group">
+        @Html.LabelFor(model => model.IdCoop, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (User.IsInRole("Gestionnaire"))
+            {
+                @Html.EditorFor(model => model.IdCoop)
+                @Html.ValidationMessageFor(model => model.IdCoop)
+            }
+            @if (User.IsInRole("Etudiant"))
+            {
+                @Html.DisplayFor(m => m.IdCoop)
+                @Html.HiddenFor(m => m.IdCoop)
+               
+            }
+        </div>
+    </div>
 
-       
+
+
         @Html.HiddenFor(model => model.CodeIdentification)
         
 

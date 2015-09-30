@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -13,6 +15,7 @@ namespace WebApplication2.Controllers
     public class LivresController : Controller
     {
         private Cooperative db = new Cooperative();
+        
 
         // GET: /Livres/
         [Authorize]
@@ -146,7 +149,7 @@ namespace WebApplication2.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Nom,Auteur,NbrPages,Prix,CodeIdentification")] Livres livres)
+        public ActionResult Edit([Bind(Include="Nom,Auteur,NbrPages,Prix,IdCoop,CodeIdentification")] Livres livres)
         {
            
             if (ModelState.IsValid)
@@ -205,39 +208,16 @@ namespace WebApplication2.Controllers
           
             if (ModelState.IsValid)
             {
+               
                 LivreInventaire LivreInv = new LivreInventaire();
                 livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
-
-                Livres LivresDeCoop = db.Livres.FirstOrDefault(i => i.CodeIdentification == livres.CodeIdentification);
-                LivreInv = db.LivreInventaire.Where(i => i.CodeIdentification == livres.CodeIdentification && i.Etat == livres.Etat).FirstOrDefault();
-                int coopId = LivresDeCoop.IdCoop.Value;
-                if (LivreInv == null)
-                {
                     livres.Id = db.LivreInventaire.Count() + 1;
                     livres.Quantite = 1;
-                    livres.Cooperative = coopId;
                     db.LivreInventaire.Add(livres);
                     db.SaveChanges();
-                }
-                else
-                {
-                   if(LivreInv.Etat.ToLower() == livres.Etat.ToLower())
-                    {
-                        
-                        LivreInv.Quantite++;
-                        db.Entry(LivreInv).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                   else
-                    {
-                        livres.Id = db.LivreInventaire.Count() + 1;
-                        livres.Cooperative = coopId;
-                        livres.Quantite = 1;
-                        db.LivreInventaire.Add(livres);
-                        db.SaveChanges();
-                        
-                    }
-                }
+               
+                
+                
                 
             }
             if (livres.ContinuerAjout == true)

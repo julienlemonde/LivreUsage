@@ -11,13 +11,10 @@ namespace WebApplication2.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Coop
     {
         public int Id { get; set; }
-        [Display(Name = "Nom de la coopérative")]
         public string Nom { get; set; }
         public string Adresse { get; set; }
         public string NomGestionnaire { get; set; }

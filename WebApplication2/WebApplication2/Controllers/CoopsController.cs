@@ -58,13 +58,28 @@ namespace WebApplication2.Controllers
        
                 if (result == null)
                 {
-                    coop.Id = db.Coop.Count() + 1;
-                    db.Coop.Add(coop);
-                    db.SaveChanges();
-                    return RedirectToAction("Details/"+coop.Id,"Coops");
+                    coop.NomGestionnaire = User.Identity.Name;
+                    Coop testGestionnaire = db.Coop.Where(i => i.NomGestionnaire == User.Identity.Name).FirstOrDefault();
+                    if(testGestionnaire == null)
+                    {
+                        coop.Id = db.Coop.Count() + 1;
+                        db.Coop.Add(coop);
+                        db.SaveChanges();
+                        return RedirectToAction("Details/" + coop.Id, "Coops");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Vous êtes déjà associé à une coopérative");
+                        return View(coop);
+                    }
+                    
                 }
                 else
-                    return View("ErrorCoop");
+                {
+                    ModelState.AddModelError("", "La coopérative " + coop.Nom + " existe déjà");
+                    return View(coop);
+                }
+                   
 
 
 
