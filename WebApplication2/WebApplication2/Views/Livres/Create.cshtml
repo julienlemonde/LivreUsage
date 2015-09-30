@@ -56,11 +56,17 @@
         </div>
 
 
-        <div class="form-group">
+       <!-- <div class="form-group">
             @Html.LabelFor(model => model.IdCoop, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.IdCoop)
                 @Html.ValidationMessageFor(model => model.IdCoop)
+            </div>
+        </div>-->
+        <div class="form-group">
+            @Html.LabelFor(m => m.IdCoop, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.IdCoop, ViewBag.ChoixCoop as IEnumerable<SelectListItem>)
             </div>
         </div>
             

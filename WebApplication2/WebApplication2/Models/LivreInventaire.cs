@@ -19,5 +19,32 @@ namespace WebApplication2.Models
         public Nullable<int> Cooperative { get; set; }
         public string CodeIdentification { get; set; }
         public string Etat { get; set; }
+        public string NomEtudiant { get; set; }
+        public IEnumerable<etat> ValeurEtat = new List<etat>
+        {
+            new etat
+            {
+                Etatid = 0,
+                name = "Comme neuf"},
+            new etat
+            {
+                Etatid = 1,
+                name = "Moyennement Abîmé"
+            },
+            new etat
+            {
+                Etatid = 2,
+                name = "Très Abîmé"
+            }
+        };
+        public int typeId { get; set; }
+        public Boolean ContinuerAjout { get; set; }
+
     }
+
+public class etat
+{
+    public int Etatid { get; set; }
+    public string name { get; set; }
+}
 }

@@ -66,7 +66,7 @@ namespace WebApplication2.Controllers
             // Si nous sommes arrivés là, un échec s’est produit. Réafficher le formulaire
             return View(model);
         }
-
+       
         //
         // GET: /Account/Register
         [AllowAnonymous]
@@ -85,7 +85,16 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 ApplicationDbContext dbContext = new ApplicationDbContext();
+                var usertest = dbContext.Users.Where(i => i.UserName == model.Username).FirstOrDefault();
+                if (usertest != null)
+                {
+                    ModelState.AddModelError("", "Le nom d'utilisateur existe déja");
+                    ViewBag.ChoixCoop = new SelectList(db.Coop.ToList(), "Id", "Nom");
+                    return View(model);
+                    //return RedirectToAction("Registertest","Account");
+                }
                 var user = new ApplicationUser() { UserName = model.Username, Telephone = model.Telephone, coopid = model.coopid };
                 user.PasswordHash = model.Password;
                 var result = await UserManager.CreateAsync(user, model.Password);

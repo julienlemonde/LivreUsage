@@ -86,6 +86,7 @@ namespace WebApplication2.Controllers
             }
             Livres livres = new Livres();
             livres.CodeIdentification = id;
+            ViewBag.ChoixCoop = new SelectList(db.Coop.ToList(), "Id", "Nom");
             if (livres == null)
             {
                 return HttpNotFound();
@@ -208,9 +209,11 @@ namespace WebApplication2.Controllers
           
             if (ModelState.IsValid)
             {
-               
+                ApplicationDbContext user = new ApplicationDbContext();
                 LivreInventaire LivreInv = new LivreInventaire();
                 livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
+                livres.Cooperative = user.Users.Where(i => i.UserName == User.Identity.Name).FirstOrDefault().coopid;
+                livres.NomEtudiant = User.Identity.Name.ToString();
                     livres.Id = db.LivreInventaire.Count() + 1;
                     livres.Quantite = 1;
                     db.LivreInventaire.Add(livres);
