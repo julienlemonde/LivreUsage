@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/01/2015 11:20:34
--- Generated from EDMX file: C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\Models\Livres.edmx
+-- Date Created: 09/27/2015 13:15:10
+-- Generated from EDMX file: C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\Models\Livres.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -48,11 +48,10 @@ GO
 -- Creating table 'LivreInventaire'
 CREATE TABLE [dbo].[LivreInventaire] (
     [Id] int  NOT NULL,
-    [Quantite] int  NOT NULL,
-    [Cooperative] int  NULL,
     [CodeIdentification] nvarchar(50)  NOT NULL,
     [Etat] nvarchar(50)  NULL,
-    [NomEtudiant] nvarchar(max)  NOT NULL
+    [Quantite] int  NOT NULL,
+    [Cooperative] int  NULL
 );
 GO
 
@@ -65,16 +64,6 @@ CREATE TABLE [dbo].[Livres] (
     [Prix] decimal(5,2)  NULL,
     [IdCoop] int  NULL,
     [CodeIdentification] nvarchar(50)  NOT NULL
-);
-GO
-
--- Creating table 'LivreAVendreSet'
-CREATE TABLE [dbo].[LivreAVendreSet] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Quantite] int(max)  NOT NULL,
-    [Cooperative] int(max)  NOT NULL,
-    [CodeIdentification] nvarchar(max)  NOT NULL,
-    [Etat] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -98,12 +87,6 @@ GO
 ALTER TABLE [dbo].[Livres]
 ADD CONSTRAINT [PK_Livres]
     PRIMARY KEY CLUSTERED ([CodeIdentification] ASC);
-GO
-
--- Creating primary key on [Id] in table 'LivreAVendreSet'
-ALTER TABLE [dbo].[LivreAVendreSet]
-ADD CONSTRAINT [PK_LivreAVendreSet]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
 -- --------------------------------------------------

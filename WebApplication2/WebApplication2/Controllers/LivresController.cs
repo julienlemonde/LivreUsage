@@ -32,6 +32,22 @@ namespace WebApplication2.Controllers
             return View(db.Livres.ToList());
         }
 
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult Confirmer(LivreInventaire livres)
+        {
+            if (ModelState.IsValid)
+            {
+                livres.Id = db.LivreInventaire.Where(i => i.NomEtudiant == livres.NomEtudiant && i.CodeIdentification == livres.CodeIdentification).FirstOrDefault().Id;
+                this.AjouterLivreAVendre(livres);
+                this.RetirerLivreInventaire(livres);
+                return RedirectToAction("RemiseLivre", "Livres");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Quelque chose ne va pas avec le model");
+                return View(livres);
+            }
+        }
         // GET: /Livres/Details/5
         [Authorize]
         public ActionResult Details(String id)
@@ -284,20 +300,15 @@ namespace WebApplication2.Controllers
         [HttpPost]
         [Authorize(Roles = "Gestionnaire")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditEtatConfirm([Bind(Include = "CodeIdentification,Etat,Cooperative,typeID,ValeurEtat")] LivreInventaire livres)
+        public ActionResult EditEtatConfirm([Bind(Include = "CodeIdentification,Etat,Cooperative,typeID,ValeurEtat,NomEtudiant")] LivreInventaire livres)
         {
 
             if (ModelState.IsValid)
             {
-                var livreTrouver = db.LivreInventaire.Where(i => i.CodeIdentification == livres.CodeIdentification).First();
-                livres.Id = livreTrouver.Id;
-                livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
-
-               
-                return RedirectToAction("DetailsConfirm", "Livres", new { id= livres.CodeIdentification });
-
-
-
+                livres.Id= db.LivreInventaire.Where(i => i.NomEtudiant == livres.NomEtudiant && i.CodeIdentification == livres.CodeIdentification).FirstOrDefault().Id;
+                this.AjouterLivreAVendre(livres);
+                this.RetirerLivreInventaire(livres);
+                return RedirectToAction("RemiseLivre", "Livres");
             }
             else
             {
@@ -340,6 +351,45 @@ namespace WebApplication2.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        private void AjouterLivreAVendre(LivreInventaire livres)
+        {
+            livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
+            var livrepret = db.LivreAVendreSet.Where(i => i.CodeIdentification == livres.CodeIdentification && i.Etat == livres.Etat && i.Etat == livres.Etat).FirstOrDefault();
+            if (livrepret == null)
+            {
+                livrepret = new LivreAVendre();
+                livrepret.CodeIdentification = livres.CodeIdentification;
+                livrepret.Cooperative = livres.Cooperative;
+                livrepret.Etat = livres.Etat;
+                livrepret.Id = db.LivreAVendreSet.Count() + 1;
+                livrepret.Quantite = 1;
+                //Add a la db 
+                db.LivreAVendreSet.Add(livrepret);
+                db.SaveChanges();
+            }
+            else
+            {
+                    livrepret.Quantite++;
+                    db.Entry(livrepret).State = EntityState.Modified;
+                    db.SaveChanges();
+               
+            }
+
+        }
+        private void RetirerLivreInventaire(LivreInventaire livres)
+        {
+            if(livres != null)
+            {
+                var testlivre = db.LivreInventaire.Where(i => i.Id == livres.Id).FirstOrDefault();
+                if (testlivre != null)
+                {
+                    db.Entry(testlivre).State = EntityState.Deleted;
+                    db.SaveChanges();
+                }
+            }
+           
+
         }
     }
 }

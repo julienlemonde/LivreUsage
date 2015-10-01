@@ -204,6 +204,9 @@
       <DependentUpon>Livres.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LivreAVendre.cs">
+      <DependentUpon>Livres.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LivreInventaire.cs">
       <DependentUpon>Livres.tt</DependentUpon>
     </Compile>

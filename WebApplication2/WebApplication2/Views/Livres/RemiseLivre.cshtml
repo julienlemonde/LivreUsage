@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Search", new { }, new { @class = "btn btn-default" })
 </p>
 <table class="table">
     <tr>
@@ -50,9 +50,8 @@
         </td>
       
         <td>
-            @Html.ActionLink("Confirmer Informations", "Edit", new { id=item.CodeIdentification }) |
-            @Html.ActionLink("Changer l'état du livre", "EditEtatConfirm", new { id = item.CodeIdentification }) |
-            @Html.ActionLink("Annuler", "Index")
+            @Html.ActionLink("Confirmer l'état du livre", "EditEtatConfirm", new { id = item.CodeIdentification }, new { @class = "btn btn-warning" }) 
+            @Html.ActionLink("Annuler", "Index", new {  }, new { @class = "btn btn-info" })
         </td>
     </tr>
 }

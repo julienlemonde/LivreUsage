@@ -42,9 +42,9 @@ namespace WebApplication2.Models
 
     }
 
-    public class etat
-    {
-        public int Etatid { get; set; }
-        public string name { get; set; }
-    }
+public class etat
+{
+    public int Etatid { get; set; }
+    public string name { get; set; }
+}
 }

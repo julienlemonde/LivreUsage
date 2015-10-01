@@ -15,10 +15,11 @@
       <EntityTypeMapping TypeName="IsTypeOf(LivresModel.LivreInventaire)">
         <MappingFragment StoreEntitySet="LivreInventaire">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
-          <ScalarProperty Name="Etat" ColumnName="Etat" />
           <ScalarProperty Name="Quantite" ColumnName="Quantite" />
           <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />
+          <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+          <ScalarProperty Name="Etat" ColumnName="Etat" />
+          <ScalarProperty Name="NomEtudiant" ColumnName="NomEtudiant" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -32,6 +33,17 @@
           <ScalarProperty Name="NbrPages" ColumnName="NbrPages" />
           <ScalarProperty Name="Prix" ColumnName="Prix" />
           <ScalarProperty Name="IdCoop" ColumnName="IdCoop" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LivreAVendreSet">
+      <EntityTypeMapping TypeName="IsTypeOf(LivresModel.LivreAVendre)">
+        <MappingFragment StoreEntitySet="LivreAVendreSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+          <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />
+          <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+          <ScalarProperty Name="Etat" ColumnName="Etat" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
