@@ -15,13 +15,14 @@ namespace WebApplication2.Controllers
     public class LivresController : Controller
     {
         private Cooperative db = new Cooperative();
-        
+        private ApplicationDbContext dbContext = new ApplicationDbContext();
         
         // GET: /Livres/Create
-        [Authorize]
+         [Authorize(Roles = "Gestionnaire")]
         public ActionResult RemiseLivre()
         {
-            return View();
+            var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+            return View(db.LivreInventaire.Where(i=>i.Cooperative == user.coopid).ToList());
         }
 
         // GET: /Livres/
@@ -34,6 +35,24 @@ namespace WebApplication2.Controllers
         // GET: /Livres/Details/5
         [Authorize]
         public ActionResult Details(String id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MasterLivreModel livres = new MasterLivreModel();
+            livres.livres = db.Livres.Find(id);
+            livres.Coop = new Coop();
+            livres.Coop.Nom = db.Coop.Where(i => i.Id == livres.livres.IdCoop).FirstOrDefault().Nom;
+            if (livres.livres == null)
+            {
+                return HttpNotFound();
+            }
+            return View(livres);
+        }
+        // GET: /Livres/Details/5
+        [Authorize]
+        public ActionResult DetailsConfirm(String id)
         {
             if (id == null)
             {
@@ -234,6 +253,58 @@ namespace WebApplication2.Controllers
                 return RedirectToAction("Search", "Livres");
             else
                 return RedirectToAction("Index","Home");
+        }
+        // GET: /Livres/EditEtatConfirm/5
+        [Authorize]
+        public ActionResult EditEtatConfirm(String id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MasterLivreModel livres = new MasterLivreModel();
+            livres.livreinventaire = new LivreInventaire();
+
+
+
+
+
+            livres.livres = new Livres();
+            var livretrouve = db.LivreInventaire.Where(i=>i.CodeIdentification == id).First();
+            livres.livreinventaire = livretrouve;
+          
+            if (livres.livres == null)
+            {
+                return HttpNotFound();
+            }
+            return View(livres.livreinventaire);
+        }
+
+        //Post EditEtatConfirm
+        [HttpPost]
+        [Authorize(Roles = "Gestionnaire")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditEtatConfirm([Bind(Include = "CodeIdentification,Etat,Cooperative,typeID,ValeurEtat")] LivreInventaire livres)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var livreTrouver = db.LivreInventaire.Where(i => i.CodeIdentification == livres.CodeIdentification).First();
+                livres.Id = livreTrouver.Id;
+                livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
+
+               
+                return RedirectToAction("DetailsConfirm", "Livres", new { id= livres.CodeIdentification });
+
+
+
+            }
+            else
+            {
+                ModelState.AddModelError("", "Quelque chose ne va pas avec le model");
+                return View(livres);
+            }
+            
         }
         
         // GET: /Livres/Delete/5

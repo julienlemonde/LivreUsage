@@ -311,6 +311,8 @@
     <Content Include="Views\Shared\ErrorCoop.cshtml" />
     <Content Include="Views\Livres\EditEtat.cshtml" />
     <Content Include="Views\Livres\RemiseLivre.cshtml" />
+    <Content Include="Views\Livres\EditEtatConfirm.cshtml" />
+    <Content Include="Views\Livres\DetailsConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

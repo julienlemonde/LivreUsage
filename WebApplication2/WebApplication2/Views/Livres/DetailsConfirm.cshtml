@@ -1,0 +1,72 @@
+﻿@model WebApplication2.Models.MasterLivreModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Livres</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.livres.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livres.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.livres.Auteur)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livres.Auteur)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.livres.NbrPages)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livres.NbrPages)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.livres.Prix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livres.Prix)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.livreinventaire.Etat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livreinventaire.Etat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.livres.CodeIdentification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livres.CodeIdentification)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Coop.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Coop.Nom)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Confirmer", "Edit", new { id = Model.livres.CodeIdentification }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
