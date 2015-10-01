@@ -16,6 +16,7 @@ namespace WebApplication2.Controllers
     public class AccountController : Controller
     {
         Cooperative db = new Cooperative();
+        ApplicationUser userdb = new ApplicationUser();
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -50,16 +51,35 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                
-                if (user != null)
+                ApplicationDbContext dbContext = new ApplicationDbContext();
+                var usertest = dbContext.Users.Where(i => i.Telephone == model.UserName).FirstOrDefault();
+                if (usertest == null)
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
+                    var user = await UserManager.FindAsync(model.UserName, model.Password);
+
+                    if (user != null)
+                    {
+                        await SignInAsync(user, model.RememberMe);
+                        return RedirectToLocal(returnUrl);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Invalid username or password.");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    var user = await UserManager.FindAsync(usertest.UserName, model.Password);
+
+                    if (user != null)
+                    {
+                        await SignInAsync(user, model.RememberMe);
+                        return RedirectToLocal(returnUrl);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Invalid username or password.");
+                    }
                 }
             }
 
@@ -85,16 +105,24 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                ViewBag.ChoixCoop = new SelectList(db.Coop.ToList(), "Id", "Nom");
                 ApplicationDbContext dbContext = new ApplicationDbContext();
                 var usertest = dbContext.Users.Where(i => i.UserName == model.Username).FirstOrDefault();
                 if (usertest != null)
                 {
                     ModelState.AddModelError("", "Le nom d'utilisateur existe déja");
-                    ViewBag.ChoixCoop = new SelectList(db.Coop.ToList(), "Id", "Nom");
-                    return View(model);
+                    
+                   
                     //return RedirectToAction("Registertest","Account");
                 }
+                var usertest2 = dbContext.Users.Where(i => i.Telephone == model.Telephone).FirstOrDefault();
+                if (usertest2 != null)
+                {
+                    ModelState.AddModelError("", "Le numéro de téléphone est déjà associé à un compte");
+                   
+                    //return RedirectToAction("Registertest","Account");
+                }
+                
                 var user = new ApplicationUser() { UserName = model.Username, Telephone = model.Telephone, coopid = model.coopid };
                 user.PasswordHash = model.Password;
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -104,10 +132,7 @@ namespace WebApplication2.Controllers
                     await SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    AddErrors(result);
-                }
+                
             }
 
             // Si nous sommes arrivés là, un échec s’est produit. Réafficher le formulaire

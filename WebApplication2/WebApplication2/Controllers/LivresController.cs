@@ -16,6 +16,13 @@ namespace WebApplication2.Controllers
     {
         private Cooperative db = new Cooperative();
         
+        
+        // GET: /Livres/Create
+        [Authorize]
+        public ActionResult RemiseLivre()
+        {
+            return View();
+        }
 
         // GET: /Livres/
         [Authorize]

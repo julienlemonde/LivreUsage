@@ -223,8 +223,6 @@ C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\Sys
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\System.Web.WebPages.resources.dll
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\System.Web.WebPages.Deployment.resources.dll
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\System.Web.WebPages.Razor.resources.dll
-C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\EntityFramework.resources.dll
-C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\EntityFramework.SqlServer.resources.dll
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\Microsoft.AspNet.Identity.Core.resources.dll
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\Microsoft.AspNet.Identity.Owin.resources.dll
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\Microsoft.AspNet.Identity.EntityFramework.resources.dll
@@ -393,3 +391,6 @@ J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.pdb
 J:\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csprojResolveAssemblyReference.cache
 C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.coopid.resources
 C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.NomEtudiant.resources
+C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.ETS.resources
+C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.coopid.resources
+C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.Migrations.NomEtudiant.resources
