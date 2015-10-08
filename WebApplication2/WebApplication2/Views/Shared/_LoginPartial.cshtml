@@ -7,10 +7,16 @@
     <ul class="nav navbar-nav navbar-right">
         <li>
              @Html.ActionLink("Ajouter livres", "Search", "Livres", routeValues: null, htmlAttributes: new { title = "Ajouter livres" })
+            
 
          </li>
-  
         <li>
+            @if (User.IsInRole("Gestionnaire"))
+            {
+                @Html.ActionLink("Réception de livres", "RemiseLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Réception de livres" })
+            }
+        </li>
+    <li>
          @Html.ActionLink("Bonjour " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Administrer" })
           
         </li>

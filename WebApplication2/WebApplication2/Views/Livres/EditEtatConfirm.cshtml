@@ -40,6 +40,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Confirmer le changement" class="btn btn-default" />
+                @Html.ActionLink("Annuler", "RemiseLivre", "Livres", new { }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>
@@ -47,5 +48,5 @@
 
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+
 </div>

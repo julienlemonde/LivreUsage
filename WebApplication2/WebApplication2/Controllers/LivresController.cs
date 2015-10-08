@@ -6,6 +6,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication2.Models;
@@ -19,10 +21,19 @@ namespace WebApplication2.Controllers
         
         // GET: /Livres/Create
          [Authorize(Roles = "Gestionnaire")]
-        public ActionResult RemiseLivre()
+        public ActionResult RemiseLivre(string search1, string search2, string search3)
         {
+           
             var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
-            return View(db.LivreInventaire.Where(i=>i.Cooperative == user.coopid).ToList());
+            if (string.IsNullOrEmpty(search1) && string.IsNullOrEmpty(search2) && string.IsNullOrEmpty(search3))
+             {
+                 return View(db.LivreInventaire.Where(i => i.Cooperative == user.coopid).ToList());
+                 
+             }
+
+            return View(db.LivreInventaire.Where(i => i.Cooperative == user.coopid && i.NomEtudiant.Contains(search1) && i.CodeIdentification.Contains(search2) && i.Titre.Contains(search3)).ToList());
+                 
+            
         }
 
         // GET: /Livres/
@@ -226,14 +237,19 @@ namespace WebApplication2.Controllers
             }
             MasterLivreModel livres = new MasterLivreModel();
             livres.livreinventaire = new LivreInventaire();
-
+            
             
            
             
 
             livres.livres = new Livres();
-            string code = db.Livres.Find(id).CodeIdentification;
-            livres.livreinventaire.CodeIdentification = code;
+            Livres recherchecode = db.Livres.Where(i => i.CodeIdentification == id).FirstOrDefault();
+            if (recherchecode == null)
+                livres.livreinventaire.CodeIdentification = id;
+            else
+                livres.livreinventaire.CodeIdentification = recherchecode.CodeIdentification;
+
+            
             if (livres.livres == null)
             {
                 return HttpNotFound();
@@ -251,12 +267,13 @@ namespace WebApplication2.Controllers
           
             if (ModelState.IsValid)
             {
-                ApplicationDbContext user = new ApplicationDbContext();
-                LivreInventaire LivreInv = new LivreInventaire();
-                livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
-                livres.Cooperative = user.Users.Where(i => i.UserName == User.Identity.Name).FirstOrDefault().coopid;
-                livres.NomEtudiant = User.Identity.Name.ToString();
-                    livres.Id = db.LivreInventaire.Count() + 1;
+                    ApplicationDbContext user = new ApplicationDbContext();
+                    LivreInventaire LivreInv = new LivreInventaire();
+                    livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
+                    livres.Cooperative = user.Users.Where(i => i.UserName == User.Identity.Name).FirstOrDefault().coopid;
+                    livres.Titre = db.Livres.Where(i=>i.CodeIdentification == livres.CodeIdentification).FirstOrDefault().Nom;
+                    livres.NomEtudiant = User.Identity.Name.ToString();
+                    livres.Id = db.LivreInventaire.Max(i => i.Id) + 1;
                     livres.Quantite = 1;
                     db.LivreInventaire.Add(livres);
                     db.SaveChanges();
@@ -308,6 +325,7 @@ namespace WebApplication2.Controllers
                 livres.Id= db.LivreInventaire.Where(i => i.NomEtudiant == livres.NomEtudiant && i.CodeIdentification == livres.CodeIdentification).FirstOrDefault().Id;
                 this.AjouterLivreAVendre(livres);
                 this.RetirerLivreInventaire(livres);
+                this.SendEmail(livres.NomEtudiant);
                 return RedirectToAction("RemiseLivre", "Livres");
             }
             else
@@ -390,6 +408,23 @@ namespace WebApplication2.Controllers
             }
            
 
+        }
+        public void SendEmail(string user)
+        {
+            
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            client.Host = "smtp.gmail.com";
+            client.EnableSsl = true;
+            client.Timeout = 10000;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new System.Net.NetworkCredential("log210groupe5@gmail.com", "7898520789");
+
+            MailMessage mm = new MailMessage("donotreply@domain.com", user, "Notification LivrEts", "Votre livre a bien été ajouté au système de vente");
+            mm.BodyEncoding = UTF8Encoding.UTF8;
+            mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+
+            client.Send(mm);
         }
     }
 }

@@ -4,56 +4,87 @@
     ViewBag.Title = "Index";
 }
 
+
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Search", new { }, new { @class = "btn btn-default" })
-</p>
+
+    <p>
+        @Html.ActionLink("Create New", "Search", new { }, new { @class = "btn btn-default" })
+    </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CodeIdentification)
+            <form method="get" action="@Url.Action("RemiseLivre", "Livres")">
+                <div class="col-xs-1">
+                    <label for="search">Search:</label>
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="text" class="form-control" placeholder="Nom Étudiant" name="search1" id="search" />
+                    </div>
+                    <div class="col-xs-3">
+                        <input type="text" class="form-control" placeholder="Code d'identification" name="search2" id="search" />
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="text" class="form-control" placeholder="Titre du livre" name="search3" id="search" />
+                    </div>
+               
+                    <button type="submit" class="btn btn-default">Perform search</button>
+                    
+</form>
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Etat)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.Quantite)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cooperative)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NomEtudiant)
-        </th>
-        <th></th>
     </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CodeIdentification)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Etat)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Quantite)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cooperative)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.NomEtudiant)
-        </td>
-      
-        <td>
-            @Html.ActionLink("Confirmer l'état du livre", "EditEtatConfirm", new { id = item.CodeIdentification }, new { @class = "btn btn-warning" }) 
-            @Html.ActionLink("Annuler", "Index", new {  }, new { @class = "btn btn-info" })
-        </td>
-    </tr>
-}
-
 </table>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CodeIdentification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Titre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Etat)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Quantite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cooperative)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomEtudiant)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodeIdentification)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Etat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantite)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cooperative)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomEtudiant)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Confirmer l'état du livre", "EditEtatConfirm", new { id = item.CodeIdentification }, new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
+
+    </table>

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/01/2015 11:20:34
+-- Date Created: 10/08/2015 10:17:10
 -- Generated from EDMX file: C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\Models\Livres.edmx
 -- --------------------------------------------------
 
@@ -24,6 +24,9 @@ GO
 
 IF OBJECT_ID(N'[dbo].[Coop]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Coop];
+GO
+IF OBJECT_ID(N'[dbo].[LivreAVendreSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[LivreAVendreSet];
 GO
 IF OBJECT_ID(N'[dbo].[LivreInventaire]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LivreInventaire];
@@ -51,6 +54,7 @@ CREATE TABLE [dbo].[LivreInventaire] (
     [Quantite] int  NOT NULL,
     [Cooperative] int  NULL,
     [CodeIdentification] nvarchar(50)  NOT NULL,
+    [Titre] nvarchar(max)  NOT NULL,
     [Etat] nvarchar(50)  NULL,
     [NomEtudiant] nvarchar(max)  NOT NULL
 );
@@ -71,10 +75,10 @@ GO
 -- Creating table 'LivreAVendreSet'
 CREATE TABLE [dbo].[LivreAVendreSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Quantite] int(max)  NOT NULL,
-    [Cooperative] int(max)  NOT NULL,
+    [Quantite] int  NULL,
+    [Cooperative] int  NULL,
     [CodeIdentification] nvarchar(max)  NOT NULL,
-    [Etat] nvarchar(max)  NOT NULL
+    [Etat] nvarchar(max)  NULL
 );
 GO
 

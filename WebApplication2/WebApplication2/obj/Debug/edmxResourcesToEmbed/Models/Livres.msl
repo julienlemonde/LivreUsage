@@ -18,6 +18,7 @@
           <ScalarProperty Name="Quantite" ColumnName="Quantite" />
           <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />
           <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+          <ScalarProperty Name="Titre" ColumnName="Titre" />
           <ScalarProperty Name="Etat" ColumnName="Etat" />
           <ScalarProperty Name="NomEtudiant" ColumnName="NomEtudiant" />
         </MappingFragment>

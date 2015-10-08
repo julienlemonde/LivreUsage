@@ -17,6 +17,7 @@
     <Property Name="Quantite" Type="Int32" Nullable="false" />
     <Property Name="Cooperative" Type="Int32" />
     <Property Name="CodeIdentification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Titre" Type="String" Nullable="false" />
     <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="NomEtudiant" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
   </EntityType>
