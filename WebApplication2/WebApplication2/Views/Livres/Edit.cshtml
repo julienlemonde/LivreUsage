@@ -21,7 +21,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Nom, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Nom)
+                @Html.TextBoxFor(model => model.Nom, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Nom)
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Auteur, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Auteur)
+                @Html.TextBoxFor(model => model.Auteur, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Auteur)
             </div>
         </div>
@@ -37,7 +37,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NbrPages, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NbrPages)
+                @Html.TextBoxFor(model => model.NbrPages, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.NbrPages)
             </div>
         </div>
@@ -47,12 +47,12 @@
             <div class="col-md-10">
                 @if (User.IsInRole("Gestionnaire"))
                 {
-                    @Html.EditorFor(model => model.Prix)
+                    @Html.TextBoxFor(model => model.Prix, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Prix)
                 }
                 @if (User.IsInRole("Etudiant"))
                 {
-                    @Html.DisplayFor(model => model.Prix)
+                    @Html.DisplayFor(model => model.Prix, new { @class = "form-control" })
                     @Html.HiddenFor(m => m.Prix)
                 }
             </div>
@@ -62,12 +62,12 @@
         <div class="col-md-10">
             @if (User.IsInRole("Gestionnaire"))
             {
-                @Html.EditorFor(model => model.IdCoop)
+                @Html.TextBoxFor(model => model.IdCoop, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IdCoop)
             }
             @if (User.IsInRole("Etudiant"))
             {
-                @Html.DisplayFor(m => m.IdCoop)
+                @Html.DisplayFor(m => m.IdCoop, new { @class = "form-control" })
                 @Html.HiddenFor(m => m.IdCoop)
                
             }
@@ -81,7 +81,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Confirmer le changement" class="btn btn-default" />
+                <input type="submit" value="Confirmer le changement" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -89,5 +89,5 @@
 
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour à la page principal", "Index","Home", new { }, new { @class = "btn btn-default" })
 </div>

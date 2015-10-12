@@ -1,0 +1,86 @@
+﻿@model WebApplication2.Models.Livres
+
+
+@{
+    ViewBag.Title = "Edit livre provenant de Google Books";
+}
+
+<h2>Edit livre provenant de Google Books</h2>
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Livres</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nom, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Nom, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Nom)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Auteur, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Auteur, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Auteur)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NbrPages, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.NbrPages, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.NbrPages)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Prix, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Prix, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Prix)
+            </div>
+        </div>
+        <div class="form-group">
+        @Html.LabelFor(model => model.IdCoop, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (User.IsInRole("Gestionnaire"))
+            {
+                @Html.TextBoxFor(model => model.IdCoop, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdCoop)
+            }
+            @if (User.IsInRole("Etudiant"))
+            {
+                @Html.DisplayFor(m => m.IdCoop, new { @class = "form-control" })
+                @Html.HiddenFor(m => m.IdCoop)
+               
+            }
+        </div>
+    </div>
+
+
+
+        @Html.HiddenFor(model => model.CodeIdentification)
+        
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Confirmer le changement" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+
+<div>
+    @Html.ActionLink("Retour à la page principal", "Index","Home", new { }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Pas le bon livre?", "Create", "Livres", new {id = Model.CodeIdentification }, new { @class = "btn btn-default" })
+</div>

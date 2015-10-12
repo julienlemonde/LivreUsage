@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Google.Apis.Books.v1.Data;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace WebApplication2.Controllers
     {
         private Cooperative db = new Cooperative();
         private ApplicationDbContext dbContext = new ApplicationDbContext();
+        private Livres search = new Livres();
         
         // GET: /Livres/Create
          [Authorize(Roles = "Gestionnaire")]
@@ -113,19 +115,34 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
-                 Livres result = db.Livres.Find(livres.CodeIdentification);
+                Livres result =  db.Livres.Find(livres.CodeIdentification);
 
                  if (result != null)
                  {
                      
-                     return RedirectToAction("Details/"+result.CodeIdentification,"Livres");
+                    return RedirectToAction("Details/"+result.CodeIdentification,"Livres");
                  }
                  else
                  {
-                    ViewBag.Code = livres.CodeIdentification;
-                     return RedirectToAction("Create", "Livres",new { id = livres.CodeIdentification});
-                 }
-            }
+                    string ISBN = livres.CodeIdentification.Replace("-", "");
+                    var output = BookSearch.SearchISBN(ISBN);
+                    if (output != null)
+                    {
+                        search.CodeIdentification = livres.CodeIdentification;
+                        search.Auteur = output.VolumeInfo.Authors[0];
+                        search.NbrPages = output.VolumeInfo.PageCount.ToString();
+                        search.Nom = output.VolumeInfo.Title;
+                        ViewBag.Code = livres.CodeIdentification;
+                        return RedirectToAction("EditGoogle", "Livres", livres = search);
+                      }
+                else
+                    {
+                        ViewBag.Code = livres.CodeIdentification;
+                        return RedirectToAction("Create", "Livres",new { id = livres.CodeIdentification});
+                    }
+
+               }
+                }
             
             return View(livres);
         }
@@ -177,7 +194,29 @@ namespace WebApplication2.Controllers
 
             return RedirectToAction("EditEtat", "Livres", new { id = livres.CodeIdentification });
         }
-
+        //Get EditGOOGLE
+        [Authorize]
+        public ActionResult EditGoogle(Livres livres)
+        {
+            ApplicationDbContext user = new ApplicationDbContext();
+            if (livres == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (livres.IdCoop == null)
+            {
+                livres.IdCoop = user.Users.Where(i => i.UserName == User.Identity.Name).FirstOrDefault().coopid;
+                return View(livres);
+            }
+            else
+            {
+                livres.Id = db.Livres.Count() + 1;
+                db.Livres.Add(livres);
+                db.SaveChanges();
+                return RedirectToAction("EditEtat", "Livres", new { id = livres.CodeIdentification });
+            }
+        }
+        
         // GET: /Livres/Edit/5
         [Authorize]
         public ActionResult Edit(String id)
@@ -426,5 +465,6 @@ namespace WebApplication2.Controllers
 
             client.Send(mm);
         }
+
     }
 }

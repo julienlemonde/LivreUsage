@@ -60,6 +60,7 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.livres.CodeIdentification }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour à la page principal", "Index", "Home", new { }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.livres.CodeIdentification }, new { @class = "btn btn-primary" })
+   
 </p>

@@ -18,7 +18,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CodeIdentification, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CodeIdentification)
+                @Html.TextBoxFor(model => model.CodeIdentification, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CodeIdentification)
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Nom, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Nom)
+                @Html.TextBoxFor(model => model.Nom, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Nom)
             </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Auteur, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Auteur)
+                @Html.TextBoxFor(model => model.Auteur, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Auteur)
             </div>
         </div>
@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NbrPages, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NbrPages)
+                @Html.TextBoxFor(model => model.NbrPages, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.NbrPages)
             </div>
         </div>
@@ -50,23 +50,17 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Prix, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Prix)
+                @Html.TextBoxFor(model => model.Prix, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Prix)
             </div>
         </div>
 
 
-       <!-- <div class="form-group">
-            @Html.LabelFor(model => model.IdCoop, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IdCoop)
-                @Html.ValidationMessageFor(model => model.IdCoop)
-            </div>
-        </div>-->
+       
         <div class="form-group">
             @Html.LabelFor(m => m.IdCoop, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.IdCoop, ViewBag.ChoixCoop as IEnumerable<SelectListItem>)
+                @Html.DropDownListFor(m => m.IdCoop, ViewBag.ChoixCoop as IEnumerable<SelectListItem>, new { @class = "form-control" })
             </div>
         </div>
             
@@ -74,12 +68,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour à la page principal", "Index","Home", new { }, new { @class = "btn btn-default" })
 </div>
