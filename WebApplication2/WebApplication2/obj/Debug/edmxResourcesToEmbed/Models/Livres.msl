@@ -40,6 +40,10 @@
     <EntitySetMapping Name="LivreAVendreSet">
       <EntityTypeMapping TypeName="IsTypeOf(LivresModel.LivreAVendre)">
         <MappingFragment StoreEntitySet="LivreAVendreSet">
+          <ScalarProperty Name="Auteur" ColumnName="Auteur" />
+          <ScalarProperty Name="Proprietaire" ColumnName="Proprietaire" />
+          <ScalarProperty Name="Prix" ColumnName="Prix" />
+          <ScalarProperty Name="Titre" ColumnName="Titre" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Quantite" ColumnName="Quantite" />
           <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />

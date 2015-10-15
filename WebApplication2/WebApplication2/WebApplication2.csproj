@@ -373,6 +373,7 @@
     <Content Include="Views\Livres\EditEtatConfirm.cshtml" />
     <Content Include="Views\Livres\DetailsConfirm.cshtml" />
     <Content Include="Views\Livres\EditGoogle.cshtml" />
+    <Content Include="Views\Livres\ReserverLivre.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

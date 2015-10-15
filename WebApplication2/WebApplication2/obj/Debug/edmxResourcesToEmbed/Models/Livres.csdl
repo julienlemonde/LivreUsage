@@ -17,7 +17,7 @@
     <Property Name="Quantite" Type="Int32" Nullable="false" />
     <Property Name="Cooperative" Type="Int32" />
     <Property Name="CodeIdentification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Titre" Type="String" Nullable="false" />
+    <Property Name="Titre" Type="String" Unicode="true" FixedLength="false" MaxLength="Max" />
     <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="NomEtudiant" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
   </EntityType>
@@ -48,5 +48,9 @@
     <Property Name="Cooperative" Type="Int32" />
     <Property Name="CodeIdentification" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
     <Property Name="Etat" Type="String" Unicode="true" FixedLength="false" MaxLength="Max" />
+    <Property Name="Titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="Proprietaire" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Auteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

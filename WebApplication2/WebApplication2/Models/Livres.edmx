@@ -4,57 +4,61 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="LivresModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityContainer Name="LivresModelStoreContainer">
-    <EntitySet Name="Coop" EntityType="LivresModel.Store.Coop" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="LivreInventaire" EntityType="LivresModel.Store.LivreInventaire" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Livres" EntityType="LivresModel.Store.Livres" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="LivreAVendreSet" EntityType="LivresModel.Store.LivreAVendreSet" store:Type="Tables" Schema="dbo" />
-  </EntityContainer>
-  <EntityType Name="Coop">
-    <Key>
-      <PropertyRef Name="Nom" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="Nom" Type="nvarchar" Nullable="false" MaxLength="50" />
-    <Property Name="Adresse" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="NomGestionnaire" Type="nvarchar" Nullable="true" MaxLength="50" />
-  </EntityType>
-  <EntityType Name="LivreInventaire">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="Quantite" Type="int" Nullable="false" />
-    <Property Name="Cooperative" Type="int" Nullable="true" />
-    <Property Name="CodeIdentification" Type="nvarchar" Nullable="false" MaxLength="50" />
-    <Property Name="Titre" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Etat" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="NomEtudiant" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Livres">
-    <Key>
-      <PropertyRef Name="CodeIdentification" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="true" />
-    <Property Name="Nom" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="Auteur" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="NbrPages" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="Prix" Type="decimal" Nullable="true" Precision="5" Scale="2" />
-    <Property Name="IdCoop" Type="int" Nullable="true" />
-    <Property Name="CodeIdentification" Type="nvarchar" Nullable="false" MaxLength="50" />
-  </EntityType>
-  <EntityType Name="LivreAVendreSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Quantite" Type="int" Nullable="true" />
-    <Property Name="Cooperative" Type="int" Nullable="true" />
-    <Property Name="CodeIdentification" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Etat" Type="nvarchar(max)" Nullable="true" />
-  </EntityType>
-</Schema></edmx:StorageModels>
+    <Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Coop">
+          <Key>
+            <PropertyRef Name="Nom" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Adresse" Type="nvarchar" MaxLength="50" />
+          <Property Name="NomGestionnaire" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LivreAVendreSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Quantite" Type="int" />
+          <Property Name="Cooperative" Type="int" />
+          <Property Name="CodeIdentification" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Etat" Type="nvarchar(max)" />
+          <Property Name="Titre" Type="nvarchar(max)" />
+          <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Proprietaire" Type="nvarchar(max)" />
+          <Property Name="Auteur" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="LivreInventaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Quantite" Type="int" Nullable="false" />
+          <Property Name="Cooperative" Type="int" />
+          <Property Name="CodeIdentification" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Etat" Type="nvarchar" MaxLength="50" />
+          <Property Name="NomEtudiant" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Titre" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Livres">
+          <Key>
+            <PropertyRef Name="CodeIdentification" />
+          </Key>
+          <Property Name="Id" Type="int" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" />
+          <Property Name="Auteur" Type="nvarchar" MaxLength="50" />
+          <Property Name="NbrPages" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="IdCoop" Type="int" />
+          <Property Name="CodeIdentification" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="LivresModelStoreContainer">
+          <EntitySet Name="Coop" EntityType="Self.Coop" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LivreAVendreSet" EntityType="Self.LivreAVendreSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Livres" EntityType="Self.Livres" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LivresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -75,7 +79,7 @@
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <Property Name="Cooperative" Type="Int32" />
           <Property Name="CodeIdentification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Titre" Type="String" Nullable="false" />
+          <Property Name="Titre" Type="String" Unicode="true" FixedLength="false" MaxLength="Max" />
           <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="NomEtudiant" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
@@ -106,6 +110,10 @@
           <Property Name="Cooperative" Type="Int32" />
           <Property Name="CodeIdentification" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="Etat" Type="String" Unicode="true" FixedLength="false" MaxLength="Max" />
+          <Property Name="Titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Proprietaire" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Auteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -152,7 +160,11 @@
     <EntitySetMapping Name="LivreAVendreSet">
       <EntityTypeMapping TypeName="IsTypeOf(LivresModel.LivreAVendre)">
         <MappingFragment StoreEntitySet="LivreAVendreSet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Auteur" ColumnName="Auteur" />
+                <ScalarProperty Name="Proprietaire" ColumnName="Proprietaire" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Quantite" ColumnName="Quantite" />
           <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />
           <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />

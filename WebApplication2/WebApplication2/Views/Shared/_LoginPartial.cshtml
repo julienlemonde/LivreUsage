@@ -15,6 +15,10 @@
             {
                 @Html.ActionLink("Réception de livres", "RemiseLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Réception de livres" })
             }
+            else
+            {
+                @Html.ActionLink("Réserver un livre", "ReserverLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Réserver un livre" })
+            }
         </li>
     <li>
          @Html.ActionLink("Bonjour " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Administrer" })

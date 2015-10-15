@@ -37,6 +37,30 @@ namespace WebApplication2.Controllers
                  
             
         }
+         // GET: /Livres/Create
+         [Authorize]
+         public ActionResult ReserverLivre(string search1, string search2, string search3)
+         {
+             var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+             List<LivreAVendre> list = new List<LivreAVendre>();
+             if (string.IsNullOrEmpty(search1) && string.IsNullOrEmpty(search2) && string.IsNullOrEmpty(search3))
+             {
+                 
+                
+
+             }
+             else
+             {
+                 list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && i.CodeIdentification.Contains(search1) && i.Auteur.Contains(search2) && i.Titre.Contains(search3)).ToList();
+                 if(list.Count()==0)
+                 {
+                     list = db.LivreAVendreSet.Where(i => i.CodeIdentification.Contains(search1) && i.Auteur.Contains(search2) && i.Titre.Contains(search3)).ToList();
+                 }
+             }
+              return View(list);
+
+
+         }
 
         // GET: /Livres/
         [Authorize]
@@ -116,10 +140,11 @@ namespace WebApplication2.Controllers
             if (ModelState.IsValid)
             {
                 Livres result =  db.Livres.Find(livres.CodeIdentification);
+                livres.CodeIdentification = livres.CodeIdentification.Replace(" ", "");
 
                  if (result != null)
                  {
-                     
+                    
                     return RedirectToAction("Details/"+result.CodeIdentification,"Livres");
                  }
                  else
@@ -328,7 +353,7 @@ namespace WebApplication2.Controllers
         }
         // GET: /Livres/EditEtatConfirm/5
         [Authorize]
-        public ActionResult EditEtatConfirm(String id)
+        public ActionResult EditEtatConfirm(String id, String etudiant)
         {
             if (id == null)
             {
@@ -342,7 +367,7 @@ namespace WebApplication2.Controllers
 
 
             livres.livres = new Livres();
-            var livretrouve = db.LivreInventaire.Where(i=>i.CodeIdentification == id).First();
+            var livretrouve = db.LivreInventaire.Where(i => i.CodeIdentification == id && i.NomEtudiant == etudiant).First();
             livres.livreinventaire = livretrouve;
           
             if (livres.livres == null)
@@ -413,32 +438,52 @@ namespace WebApplication2.Controllers
         {
             livres.Etat = livres.ValeurEtat.ElementAt(livres.typeId).name;
             var livrepret = db.LivreAVendreSet.Where(i => i.CodeIdentification == livres.CodeIdentification && i.Etat == livres.Etat && i.Etat == livres.Etat).FirstOrDefault();
-            if (livrepret == null)
+            Livres InfoLivre = db.Livres.Where(i => i.CodeIdentification == livres.CodeIdentification).First();
+            if (livrepret == null || livrepret.Cooperative != livres.Cooperative)
             {
                 livrepret = new LivreAVendre();
                 livrepret.CodeIdentification = livres.CodeIdentification;
                 livrepret.Cooperative = livres.Cooperative;
                 livrepret.Etat = livres.Etat;
+                livrepret.Titre = InfoLivre.Nom;
                 livrepret.Id = db.LivreAVendreSet.Count() + 1;
+                livrepret.Auteur = InfoLivre.Auteur;
+                
+                if(livres.Etat == "Comme Neuf")
+                {
+                    livrepret.Prix = ((InfoLivre.Prix)*(decimal)0.75);
+                }
+                else if (livres.Etat == "Moyennement Abîmé")
+                {
+                    livrepret.Prix = ((InfoLivre.Prix) * (decimal)0.50);
+
+                }
+                else
+                {
+                    livrepret.Prix = ((InfoLivre.Prix) * (decimal)0.25);
+                }
+                livrepret.Proprietaire += (livres.NomEtudiant + ";");
                 livrepret.Quantite = 1;
                 //Add a la db 
                 db.LivreAVendreSet.Add(livrepret);
                 db.SaveChanges();
             }
-            else
+            else if(livrepret.Cooperative == livres.Cooperative)
             {
                     livrepret.Quantite++;
+                    livrepret.Proprietaire += (livres.NomEtudiant + ";");
                     db.Entry(livrepret).State = EntityState.Modified;
                     db.SaveChanges();
                
             }
+            
 
         }
         private void RetirerLivreInventaire(LivreInventaire livres)
         {
             if(livres != null)
             {
-                var testlivre = db.LivreInventaire.Where(i => i.Id == livres.Id).FirstOrDefault();
+                var testlivre = db.LivreInventaire.Where(i => i.Id == livres.Id && i.NomEtudiant == livres.NomEtudiant).FirstOrDefault();
                 if (testlivre != null)
                 {
                     db.Entry(testlivre).State = EntityState.Deleted;

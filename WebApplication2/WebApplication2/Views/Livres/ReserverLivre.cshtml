@@ -1,31 +1,31 @@
-﻿@model IEnumerable<WebApplication2.Models.LivreInventaire>
+﻿@model IEnumerable<WebApplication2.Models.LivreAVendre>
 
 @{
-    ViewBag.Title = "Réception d'un livre";
+    ViewBag.Title = "Réserver un livre";
 }
 
 
-<h2>Réception d'un livre</h2>
+<h2>Réserver un livre</h2>
 
 
     <p>
-        @Html.ActionLink("Create New", "Search", new { }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Ajouter un livre a vendre", "Search", new { }, new { @class = "btn btn-primary" })
     </p>
 <table class="table">
     <tr>
         <th>
-            <form method="get" action="@Url.Action("RemiseLivre", "Livres")">
+            <form method="get" action="@Url.Action("ReserverLivre", "Livres")">
                 <div class="col-xs-1">
                     <label for="search">Recherche:</label>
                     </div>
                     <div class="col-xs-2">
-                        <input type="text" class="form-control" placeholder="Nom Étudiant" name="search1" id="search" />
+                        <input type="text" class="form-control" placeholder="Code d'identification'" name="search1" id="search1" />
                     </div>
                     <div class="col-xs-3">
-                        <input type="text" class="form-control" placeholder="Code d'identification" name="search2" id="search" />
+                        <input type="text" class="form-control" placeholder="Auteur" name="search2" id="search" />
                     </div>
                     <div class="col-xs-4">
-                        <input type="text" class="form-control" placeholder="Titre" name="search3" id="search" />
+                        <input type="text" class="form-control" placeholder="Titre" name="search3" id="search3" />
                     </div>
                
                    <button type="submit" class="btn btn-info">
@@ -56,7 +56,7 @@
                 @Html.DisplayNameFor(model => model.Cooperative)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NomEtudiant)
+                @Html.DisplayNameFor(model => model.Prix)
             </th>
             <th></th>
         </tr>
@@ -81,13 +81,24 @@
                 </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.NomEtudiant)
+                    @Html.DisplayFor(modelItem => item.Prix)
                 </td>
 
                 <td>
-                    @Html.ActionLink("Confirmer l'état du livre", "EditEtatConfirm", new { id = item.CodeIdentification, etudiant = item.NomEtudiant }, new { @class = "btn btn-warning" })
+                    <button  class="btn btn-success" >Acheter</button>
+                    <button disabled  class="btn btn-danger">Confirmer</button>
+                   
+                        
+
                 </td>
             </tr>
         }
-
+       
     </table>
+<script>
+    $('button').click(function () {
+        $(this).text(function (i, old) {
+            return old == '+' ? '-' : '+';
+        });
+    });
+    </script>
