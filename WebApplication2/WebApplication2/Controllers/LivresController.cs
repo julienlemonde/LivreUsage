@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -37,6 +38,18 @@ namespace WebApplication2.Controllers
                  
             
         }
+        [Authorize]
+        public ActionResult ConfirmationPaiement(int id)
+         {
+             LivreAVendre livreChoisi = db.LivreAVendreSet.Where(i => i.Id == id).First();
+             livreChoisi.Acheteur += (User.Identity.Name + ";");
+             livreChoisi.DateReservation += (DateTime.Now.ToShortDateString() + ";");
+             db.Entry(livreChoisi).State = EntityState.Modified;
+ 
+             db.SaveChanges();
+
+            return  RedirectToAction("Index", "Home");
+         }
          // GET: /Livres/Create
          [Authorize]
          public ActionResult ReserverLivre(string search1, string search2, string search3)
@@ -51,12 +64,56 @@ namespace WebApplication2.Controllers
              }
              else
              {
+                 
                  list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && i.CodeIdentification.Contains(search1) && i.Auteur.Contains(search2) && i.Titre.Contains(search3)).ToList();
                  if(list.Count()==0)
                  {
                      list = db.LivreAVendreSet.Where(i => i.CodeIdentification.Contains(search1) && i.Auteur.Contains(search2) && i.Titre.Contains(search3)).ToList();
                  }
              }
+             string index = "";
+             int ind = 0;
+               foreach(LivreAVendre i in list)
+                 {
+                     int? indexQte = i.Quantite;
+                     if (i.DateReservation != null)
+                     {
+                         string[] dates = i.DateReservation.Split(';');
+                         int nbLivreReserver = 0;
+                         for (int j = 0; j < indexQte; j++)
+                         {
+                             string[] sousDateTemp = dates[j].Split('-');
+
+                             DateTime dateTemp = new DateTime(int.Parse(sousDateTemp[0]), int.Parse(sousDateTemp[1]), int.Parse(sousDateTemp[2]));
+                             DateTime now = DateTime.Now.AddDays(-2);
+                             if (dateTemp >= now)
+                             {
+                                 nbLivreReserver += 1;
+                             }
+                             else
+                             {
+                                 nbLivreReserver -= 1;
+                             }
+                         }
+                         i.Quantite = indexQte - nbLivreReserver;
+                         if (i.Quantite == 0)
+                         {
+                             index += ind + ";";
+                         }
+                     }
+                     ind++;
+                 }
+             if(index != "")
+             {
+                 string[] ASupprimer = index.Split(';');
+                 foreach (string i in ASupprimer)
+                 {
+                     if(i != "")
+                     list.RemoveAt(int.Parse(i));
+                 }
+             }
+            
+
               return View(list);
 
 
@@ -121,7 +178,36 @@ namespace WebApplication2.Controllers
             }
             return View(livres);
         }
+        public ActionResult DetailsReservation(int id)
+        {
+            ApplicationDbContext user = new ApplicationDbContext();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+           MasterLivreModel livres = new MasterLivreModel();
+           livres.livreVendre = db.LivreAVendreSet.Where(i => i.Id == id).First();
+            livres.Coop = new Coop();
+           livres.Coop = db.Coop.Where(i => i.Id == livres.livreVendre.Cooperative).FirstOrDefault();
 
+           NumberFormatInfo nfi = new NumberFormatInfo();
+           nfi.NumberDecimalSeparator = ".";
+           double prix = (double)livres.livreVendre.Prix;
+           string ValeurPrix = prix.ToString(nfi);
+           ViewBag.Prix = ValeurPrix;
+           string ConfirmURL = "http://localhost:56740/Livres/ConfirmationPaiement/" + livres.livreVendre.Id;
+           ViewBag.ConfirmURL = ConfirmURL;
+            if(livres.Coop.Id != user.Users.Where(i => i.UserName == User.Identity.Name).First().coopid)
+            {
+                ModelState.AddModelError("","Le livre sélectionné se trouve dans une coopérative différente, il y aura un frais supplémentaire pour le transport");
+                ViewBag.Frais = "5.00";
+            }
+            else
+            {
+                ViewBag.Frais = "0.00";
+            }
+            return View(livres);
+        }
         // GET: /Livres/Create
         [Authorize]
         public ActionResult Search()
@@ -493,6 +579,7 @@ namespace WebApplication2.Controllers
            
 
         }
+        
         public void SendEmail(string user)
         {
             

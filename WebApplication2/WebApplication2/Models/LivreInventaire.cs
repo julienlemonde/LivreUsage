@@ -11,7 +11,7 @@ namespace WebApplication2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class LivreInventaire
     {
         public int Id { get; set; }
@@ -43,11 +43,11 @@ namespace WebApplication2.Models
 
     }
 
-public class etat
-{
-    public int Etatid { get; set; }
-    public string name { get; set; }
+    public class etat
+    {
+        public int Etatid { get; set; }
+        public string name { get; set; }
+    }
 }
-}
-    
+
 

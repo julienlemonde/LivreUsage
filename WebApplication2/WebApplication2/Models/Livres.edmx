@@ -27,6 +27,8 @@
           <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
           <Property Name="Proprietaire" Type="nvarchar(max)" />
           <Property Name="Auteur" Type="nvarchar(max)" />
+          <Property Name="DateReservation" Type="nvarchar(max)" />
+          <Property Name="Acheteur" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="LivreInventaire">
           <Key>
@@ -114,6 +116,8 @@
           <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="Proprietaire" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Auteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Acheteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateReservation" Type="String" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -160,7 +164,9 @@
     <EntitySetMapping Name="LivreAVendreSet">
       <EntityTypeMapping TypeName="IsTypeOf(LivresModel.LivreAVendre)">
         <MappingFragment StoreEntitySet="LivreAVendreSet">
-          <ScalarProperty Name="Auteur" ColumnName="Auteur" />
+          <ScalarProperty Name="DateReservation" ColumnName="DateReservation" />
+                <ScalarProperty Name="Acheteur" ColumnName="Acheteur" />
+                <ScalarProperty Name="Auteur" ColumnName="Auteur" />
                 <ScalarProperty Name="Proprietaire" ColumnName="Proprietaire" />
                 <ScalarProperty Name="Prix" ColumnName="Prix" />
                 <ScalarProperty Name="Titre" ColumnName="Titre" />

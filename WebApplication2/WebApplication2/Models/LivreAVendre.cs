@@ -23,5 +23,7 @@ namespace WebApplication2.Models
         public Nullable<decimal> Prix { get; set; }
         public string Proprietaire { get; set; }
         public string Auteur { get; set; }
+        public string Acheteur { get; set; }
+        public string DateReservation { get; set; }
     }
 }

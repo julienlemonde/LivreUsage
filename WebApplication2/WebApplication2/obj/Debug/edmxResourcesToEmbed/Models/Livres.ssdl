@@ -22,6 +22,8 @@
     <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
     <Property Name="Proprietaire" Type="nvarchar(max)" />
     <Property Name="Auteur" Type="nvarchar(max)" />
+    <Property Name="DateReservation" Type="nvarchar(max)" />
+    <Property Name="Acheteur" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="LivreInventaire">
     <Key>

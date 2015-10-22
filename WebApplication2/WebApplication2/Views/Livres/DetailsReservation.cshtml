@@ -1,0 +1,85 @@
+﻿@model WebApplication2.Models.MasterLivreModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+
+<div>
+    <h4>Livres</h4>
+	<hr />
+     @Html.ValidationSummary()
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.livreVendre.CodeIdentification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livreVendre.CodeIdentification)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.livreVendre.Titre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livreVendre.Titre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.livreVendre.Auteur)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livreVendre.Auteur)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.livreVendre.Prix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livreVendre.Prix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.livreVendre.Etat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.livreVendre.Etat)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Coop.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Coop.Nom)
+        </dd>
+        
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Retour à la page principal", "Index", "Home", new { }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.livreVendre.Id }, new { @class = "btn btn-primary" })
+    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="VSY9C67S58FAW">
+        <input type="hidden" name="lc" value="CA">
+        <input type="hidden" name="item_name" value="InsererNomICI">
+        <input type="hidden" name="item_number" value="420">
+        <input type="hidden" name="amount" value='@ViewBag.Prix'>
+        <input type="hidden" name="currency_code" value="CAD">
+        <input type="hidden" name="button_subtype" value="services">
+        <input type="hidden" name="no_note" value="1">
+        <input type="hidden" name="no_shipping" value="1">
+        <input type="hidden" name="rm" value="1">
+        <input type="hidden" name="return" value='@ViewBag.ConfirmUrl'>
+        <input type="hidden" name="cancel_return" value="http://localhost:56740/Livres/ReserverLivre">
+        <input type="hidden" name="shipping" value='@ViewBag.Frais'>
+        <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+        <input type="image" src="https://www.sandbox.paypal.com/fr_CA/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
+        <img alt="" border="0" src="https://www.sandbox.paypal.com/fr_CA/i/scr/pixel.gif" width="1" height="1">
+    </form>
+</p>
