@@ -70,6 +70,12 @@ namespace WebApplication2.Controllers
                  {
                      list = db.LivreAVendreSet.Where(i => i.CodeIdentification.Contains(search1) && i.Auteur.Contains(search2) && i.Titre.Contains(search3)).ToList();
                  }
+                 if(list.Count() == 0)
+                {
+                  
+                        ViewBag.Search = search1;
+                    ViewBag.NotFound = true;
+                }
              }
              string index = "";
              int ind = 0;
@@ -112,13 +118,38 @@ namespace WebApplication2.Controllers
                      list.RemoveAt(int.Parse(i));
                  }
              }
-            
+           
 
               return View(list);
 
 
          }
-
+        public ActionResult ConfirmationNotification(string value)
+        {
+            if(value != null || value != "")
+            {
+                Notification UserNotif = new Notification();
+                var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+                Notification notiftest = db.Notification.Where(i => i.CodeIdentification == value && i.NomEtudiant == User.Identity.Name).FirstOrDefault();
+                if(notiftest == null)
+                {
+                    UserNotif.CodeIdentification = value;
+                    UserNotif.NomEtudiant = user.UserName;
+                    UserNotif.Cooperative = user.coopid;
+                    UserNotif.id = db.Notification.Max(i => i.id) + 1;
+                    db.Notification.Add(UserNotif);
+                    db.SaveChanges();
+                    ViewBag.Success = true;
+                }
+                else
+                {
+                    ViewBag.Warning = true;
+                }
+               
+            }
+            List<LivreAVendre> list = new List<LivreAVendre>();
+            return View("ReserverLivre", list);
+        }
         // GET: /Livres/
         [Authorize]
         public ActionResult Index(string code)
@@ -472,10 +503,18 @@ namespace WebApplication2.Controllers
 
             if (ModelState.IsValid)
             {
-                livres.Id= db.LivreInventaire.Where(i => i.NomEtudiant == livres.NomEtudiant && i.CodeIdentification == livres.CodeIdentification).FirstOrDefault().Id;
+                var livretest = db.LivreInventaire.Where(i => i.NomEtudiant == livres.NomEtudiant && i.CodeIdentification == livres.CodeIdentification).FirstOrDefault();
+                if (livretest != null)
+                    livres.Id = livretest.Id;
                 this.AjouterLivreAVendre(livres);
                 this.RetirerLivreInventaire(livres);
-                this.SendEmail(livres.NomEtudiant);
+                this.SendEmail(livres.NomEtudiant, "Votre livre a bien été ajouter au systeme de vente","Ajout livre");
+                var listeNotif = db.Notification.Where(i => i.CodeIdentification == livres.CodeIdentification);
+                foreach(Notification livre in listeNotif)
+                {
+                    this.SendEmail(livre.NomEtudiant, "Le livre que vous chercher a été rajouter au système", "L'attente est terminé");
+                   
+                }
                 return RedirectToAction("RemiseLivre", "Livres");
             }
             else
@@ -580,7 +619,7 @@ namespace WebApplication2.Controllers
 
         }
         
-        public void SendEmail(string user)
+        public void SendEmail(string user, string message, string objet)
         {
             
             SmtpClient client = new SmtpClient();
@@ -591,7 +630,7 @@ namespace WebApplication2.Controllers
             client.UseDefaultCredentials = false;
             client.Credentials = new System.Net.NetworkCredential("log210groupe5@gmail.com", "7898520789");
 
-            MailMessage mm = new MailMessage("donotreply@domain.com", user, "Notification LivrEts", "Votre livre a bien été ajouté au système de vente");
+            MailMessage mm = new MailMessage("donotreply@domain.com", user, "Notification LivrEts: "+objet, message);
             mm.BodyEncoding = UTF8Encoding.UTF8;
             mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 

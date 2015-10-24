@@ -7,6 +7,45 @@
 
 <h2>Réserver un livre</h2>
 
+@if (ViewBag.Success == true)
+{
+    <div class="alert alert-success fade in">
+        <strong>Succès!</strong> Votre demande de notification a été effectué avec succès. Vous serez avisé lorsqu'un autre étudiant rajoutera votre livre dans le système. Prendre notre
+        qu'il peut s'agir d'un livre provenant d'une autre coopérative que qu'il peut y avoir des frais de transport ratachés.
+    </div>
+}
+@if(ViewBag.Warning == true)
+{
+    <div class="alert alert-warning">
+        <strong>Attention!</strong> Vous avez déjà fait une demande de notification pour ce livre. Soyez patient, vous receverez une notification quand ce livre sera rajouter.
+    </div>
+}
+@if (ViewBag.NotFound == true)
+{
+    <div class="alert alert-danger">
+        <strong>Attention !</strong> Votre Livre n'a pas été trouvé dans le systeme. Voulez-vous être notifié lorsqu'un étudiant le rajoute?
+        <form method="post" action="@Url.Action("ConfirmationNotification")">
+
+            @if (ViewBag.Search == "")
+            {
+                @Html.TextBox("value", "", new { @class = "form-control" })
+            }
+            @if (ViewBag.Search != "")
+            {
+                @Html.TextBox("value", (string)ViewBag.Search, new { @class = "form-control" })
+            }
+
+
+            <div class="form-group">
+                <input type="submit" value="Être Notifié" class="btn btn-danger" />
+            </div>
+        </form>
+    </div>
+
+
+
+
+}
 
     <p>
         @Html.ActionLink("Ajouter un livre a vendre", "Search", new { }, new { @class = "btn btn-primary" })
@@ -20,6 +59,7 @@
                     </div>
                     <div class="col-xs-2">
                         <input type="text" class="form-control" placeholder="Code d'identification" name="search1" id="search1" />
+                        
                     </div>
                     <div class="col-xs-3">
                         <input type="text" class="form-control" placeholder="Auteur" name="search2" id="search" />
@@ -86,6 +126,7 @@
                 </td>
 
                 <td>
+                    
                     @Html.ActionLink("Réserver", "DetailsReservation", new { id = item.Id}, new { @class = "btn btn-success" }) 
                     
                    

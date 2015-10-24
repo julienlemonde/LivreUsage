@@ -54,5 +54,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Notification">
+      <EntityTypeMapping TypeName="LivresModel.Notification">
+        <MappingFragment StoreEntitySet="Notification">
+          <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+          <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />
+          <ScalarProperty Name="NomEtudiant" ColumnName="NomEtudiant" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

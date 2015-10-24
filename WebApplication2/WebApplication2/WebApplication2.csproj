@@ -286,6 +286,9 @@
     </Compile>
     <Compile Include="Models\MasterLivreModel.cs" />
     <Compile Include="Models\Model1.cs" />
+    <Compile Include="Models\Notification.cs">
+      <DependentUpon>Livres.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -375,6 +378,7 @@
     <Content Include="Views\Livres\EditGoogle.cshtml" />
     <Content Include="Views\Livres\ReserverLivre.cshtml" />
     <Content Include="Views\Livres\DetailsReservation.cshtml" />
+    <Content Include="Views\Livres\ConfirmationNotification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -29,5 +29,6 @@ namespace WebApplication2.Models
         public virtual DbSet<LivreInventaire> LivreInventaire { get; set; }
         public virtual DbSet<Livres> Livres { get; set; }
         public virtual DbSet<LivreAVendre> LivreAVendreSet { get; set; }
+        public virtual DbSet<Notification> Notification { get; set; }
     }
 }

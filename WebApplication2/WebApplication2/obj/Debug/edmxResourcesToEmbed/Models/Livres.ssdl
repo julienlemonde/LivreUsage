@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Coop">
     <Key>
       <PropertyRef Name="Nom" />
@@ -49,10 +49,20 @@
     <Property Name="IdCoop" Type="int" />
     <Property Name="CodeIdentification" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="NomEtudiant" Type="nvarchar(max)" />
+    <Property Name="Cooperative" Type="int" />
+    <Property Name="CodeIdentification" Type="nvarchar(max)" />
+  </EntityType>
   <EntityContainer Name="LivresModelStoreContainer">
     <EntitySet Name="Coop" EntityType="Self.Coop" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LivreAVendreSet" EntityType="Self.LivreAVendreSet" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Livres" EntityType="Self.Livres" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>
