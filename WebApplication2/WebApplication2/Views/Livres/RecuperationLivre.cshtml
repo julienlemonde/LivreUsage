@@ -1,0 +1,102 @@
+﻿@model IEnumerable<WebApplication2.Models.LivreAVendre>
+
+@{
+    ViewBag.Title = "Récupération de livres";
+}
+
+
+<h2>Récupération d'un livre</h2>
+@if (ViewBag.Success == true)
+{
+    <div class="alert alert-success fade in">
+        <strong>Succès!</strong> La transaction a été complété avec succèss. Les informations relativent à cette transaction ont été sauvegardés dans le système.
+    </div>
+}
+
+    
+<table class="table">
+    <tr>
+        <th>
+            <form method="get" action="@Url.Action("RecuperationLivre", "Livres")">
+                <div class="col-xs-1">
+                    <label for="search">Recherche:</label>
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="text" class="form-control" placeholder="Nom Étudiant" name="search1" id="search" />
+                    </div>
+                    <div class="col-xs-3">
+                        <input type="text" class="form-control" placeholder="Code d'identification" name="search2" id="search" />
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="text" class="form-control" placeholder="Titre" name="search3" id="search" />
+                    </div>
+               
+                   <button type="submit" class="btn btn-info">
+                       <span class="glyphicon glyphicon-search"></span>
+                        Recherche
+                   </button>
+                    
+</form>
+        </th>
+    </tr>
+</table>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CodeIdentification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Titre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Etat)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Quantite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cooperative)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prix)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Acheteur)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodeIdentification)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Etat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantite)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cooperative)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prix)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Acheteur)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Confirmer la remise du livre", "RecuperationLivreConfirmation", new { id = item.Id}, new { @class = "btn btn-warning" })
+                    
+                </td>
+            </tr>
+        }
+
+    </table>

@@ -379,6 +379,8 @@
     <Content Include="Views\Livres\ReserverLivre.cshtml" />
     <Content Include="Views\Livres\DetailsReservation.cshtml" />
     <Content Include="Views\Livres\ConfirmationNotification.cshtml" />
+    <Content Include="Views\Livres\RecuperationLivre.cshtml" />
+    <Content Include="Views\Livres\RecuperationLivreConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

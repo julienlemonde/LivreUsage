@@ -38,12 +38,86 @@ namespace WebApplication2.Controllers
                  
             
         }
+        // GET: /Livres/RecuperationLivre
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult RecuperationLivre(string search1, string search2, string search3)
+        {
+
+            var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+            List<LivreAVendre> list = new List<LivreAVendre>();
+            if (string.IsNullOrEmpty(search1) && string.IsNullOrEmpty(search2) && string.IsNullOrEmpty(search3))
+            {
+                list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
+                return View(list);
+
+            }
+            list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && i.Acheteur.Contains(search1) && i.CodeIdentification.Contains(search2) && i.Titre.Contains(search3) && (i.Acheteur != "" && i.Acheteur != null)).ToList();
+            return View(list);
+
+
+        }
+        // POST: /Livres/RecuperationLivre
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult RecuperationLivreConfirmation(int id)
+        {
+            LivreAVendre livre = db.LivreAVendreSet.Where(i => i.Id == id).First();
+            var theams = livre.Acheteur;
+            List<string> myList = theams.TrimEnd(';').Split(';').ToList();
+            if (myList.Count == 1)
+            {
+                if (livre.Quantite != 1)
+                {
+                    var user = dbContext.Users.Where(i => i.UserName == myList[0]);
+                    livre.Acheteur = null;
+                    livre.DateReservation = null;
+                    db.Entry(livre).State = EntityState.Modified;
+                   
+
+                }
+                else
+                {
+                    db.LivreAVendreSet.Remove(livre);
+                }
+                ViewBag.Success = true;
+                db.SaveChanges();
+                List<LivreAVendre> list = new List<LivreAVendre>();
+                return View("RecuperationLivre", list);
+
+            }
+            else
+            {
+                List<LivreAVendre> list = new List<LivreAVendre>(myList.Count());
+               
+                string[] dates = livre.DateReservation.Split(';');
+               
+                int index = 0;
+                foreach (string str in myList)
+                {
+                    LivreAVendre livrevendu = new LivreAVendre();
+                    livrevendu.Etat = livre.Etat;
+                    livrevendu.CodeIdentification = livre.CodeIdentification;
+                    livrevendu.Titre = livre.Titre;
+                    livrevendu.Prix = livre.Prix;
+                    livrevendu.Cooperative = livre.Cooperative;
+                    livrevendu.DateReservation = dates[index];
+                    livrevendu.Quantite = 1;
+                    livrevendu.Acheteur = str;
+                    list.Add(livrevendu);
+                    index++;
+                }
+               
+                return View(list);
+            }
+            return View();
+        }
+
         [Authorize]
         public ActionResult ConfirmationPaiement(int id)
          {
              LivreAVendre livreChoisi = db.LivreAVendreSet.Where(i => i.Id == id).First();
              livreChoisi.Acheteur += (User.Identity.Name + ";");
-             livreChoisi.DateReservation += (DateTime.Now.ToShortDateString() + ";");
+                livreChoisi.DateReservation += (DateTime.Now.ToShortDateString() + ";");
+
              db.Entry(livreChoisi).State = EntityState.Modified;
  
              db.SaveChanges();
@@ -86,26 +160,29 @@ namespace WebApplication2.Controllers
                      {
                          string[] dates = i.DateReservation.Split(';');
                          int nbLivreReserver = 0;
-                         for (int j = 0; j < indexQte; j++)
-                         {
-                             string[] sousDateTemp = dates[j].Split('-');
 
-                             DateTime dateTemp = new DateTime(int.Parse(sousDateTemp[0]), int.Parse(sousDateTemp[1]), int.Parse(sousDateTemp[2]));
-                             DateTime now = DateTime.Now.AddDays(-2);
-                             if (dateTemp >= now)
-                             {
-                                 nbLivreReserver += 1;
-                             }
-                             else
-                             {
-                                 nbLivreReserver -= 1;
-                             }
-                         }
-                         i.Quantite = indexQte - nbLivreReserver;
-                         if (i.Quantite == 0)
-                         {
-                             index += ind + ";";
-                         }
+                    for (int j = 0; j < dates.Length; j++)
+                    {
+                        if (dates[j] != "")
+                        {
+                            string[] sousDateTemp = dates[j].Split('-');
+
+                            DateTime dateTemp = new DateTime(int.Parse(sousDateTemp[0]), int.Parse(sousDateTemp[1]), int.Parse(sousDateTemp[2]));
+                            DateTime now = DateTime.Now.AddDays(-2);
+                            if (dateTemp >= now)
+                            {
+                                nbLivreReserver += 1;
+                            }
+                           
+
+
+                            i.Quantite = indexQte - nbLivreReserver;
+                            if (i.Quantite == 0)
+                            {
+                                index += ind + ";";
+                            }
+                        }
+                    }
                      }
                      ind++;
                  }
@@ -507,13 +584,14 @@ namespace WebApplication2.Controllers
                 if (livretest != null)
                     livres.Id = livretest.Id;
                 this.AjouterLivreAVendre(livres);
-                this.RetirerLivreInventaire(livres);
+               // this.RetirerLivreInventaire(livres);
                 this.SendEmail(livres.NomEtudiant, "Votre livre a bien été ajouter au systeme de vente","Ajout livre");
-                var listeNotif = db.Notification.Where(i => i.CodeIdentification == livres.CodeIdentification);
-                foreach(Notification livre in listeNotif)
+                List<Notification> listeNotif = db.Notification.Where(i => i.CodeIdentification == livres.CodeIdentification).ToList();
+                for (int i = 0; i < listeNotif.Count(); i++)
                 {
-                    this.SendEmail(livre.NomEtudiant, "Le livre que vous chercher a été rajouter au système", "L'attente est terminé");
-                   
+                    this.SendEmail(listeNotif[i].NomEtudiant, "Le livre que vous chercher a été rajouter au système", "L'attente est terminé");
+                    db.Notification.Remove(listeNotif.ElementAt(i));
+                    db.SaveChanges();
                 }
                 return RedirectToAction("RemiseLivre", "Livres");
             }
