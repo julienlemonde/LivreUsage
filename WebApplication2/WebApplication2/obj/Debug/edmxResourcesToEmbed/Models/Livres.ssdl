@@ -9,6 +9,17 @@
     <Property Name="Adresse" Type="nvarchar" MaxLength="50" />
     <Property Name="NomGestionnaire" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="HistoriqueAchat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Acheteur" Type="nvarchar(max)" />
+    <Property Name="CodeIdentification" Type="nvarchar(max)" />
+    <Property Name="Etat" Type="nvarchar(max)" />
+    <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="dateRecuperation" Type="nvarchar(max)" />
+  </EntityType>
   <EntityType Name="LivreAVendreSet">
     <Key>
       <PropertyRef Name="Id" />
@@ -42,8 +53,8 @@
       <PropertyRef Name="CodeIdentification" />
     </Key>
     <Property Name="Id" Type="int" />
-    <Property Name="Nom" Type="nvarchar" MaxLength="50" />
-    <Property Name="Auteur" Type="nvarchar" MaxLength="50" />
+    <Property Name="Nom" Type="nvarchar(max)" />
+    <Property Name="Auteur" Type="nvarchar(max)" />
     <Property Name="NbrPages" Type="nvarchar" MaxLength="50" />
     <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
     <Property Name="IdCoop" Type="int" />
@@ -60,6 +71,7 @@
   </EntityType>
   <EntityContainer Name="LivresModelStoreContainer">
     <EntitySet Name="Coop" EntityType="Self.Coop" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HistoriqueAchat" EntityType="Self.HistoriqueAchat" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LivreAVendreSet" EntityType="Self.LivreAVendreSet" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Livres" EntityType="Self.Livres" Schema="dbo" store:Type="Tables" />

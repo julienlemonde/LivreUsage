@@ -26,8 +26,8 @@
       <PropertyRef Name="CodeIdentification" />
     </Key>
     <Property Name="Id" Type="Int32" />
-    <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Auteur" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Nom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Auteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="NbrPages" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
     <Property Name="IdCoop" Type="Int32" />
@@ -39,6 +39,7 @@
     <EntitySet Name="Livres" EntityType="Self.Livres" />
     <EntitySet Name="LivreAVendreSet" EntityType="LivresModel.LivreAVendre" />
     <EntitySet Name="Notification" EntityType="LivresModel.Notification" />
+    <EntitySet Name="HistoriqueAchat" EntityType="LivresModel.HistoriqueAchat" />
   </EntityContainer>
   <EntityType Name="LivreAVendre">
     <Key>
@@ -64,5 +65,16 @@
     <Property Name="NomEtudiant" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Cooperative" Type="Int32" />
     <Property Name="CodeIdentification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="HistoriqueAchat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Acheteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CodeIdentification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Etat" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="dateRecuperation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

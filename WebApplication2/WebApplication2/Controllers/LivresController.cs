@@ -56,20 +56,22 @@ namespace WebApplication2.Controllers
 
 
         }
-        // POST: /Livres/RecuperationLivre
+        // get: /Livres/RecuperationLivre
         [Authorize(Roles = "Gestionnaire")]
         public ActionResult RecuperationLivreConfirmation(int id)
         {
             LivreAVendre livre = db.LivreAVendreSet.Where(i => i.Id == id).First();
-            var theams = livre.Acheteur;
-            List<string> myList = theams.TrimEnd(';').Split(';').ToList();
+            var listeacheteur = livre.Acheteur;
+            List<string> myList = listeacheteur.TrimEnd(';').Split(';').ToList();
             if (myList.Count == 1)
             {
                 if (livre.Quantite != 1)
                 {
+                    
                     var user = dbContext.Users.Where(i => i.UserName == myList[0]);
                     livre.Acheteur = null;
                     livre.DateReservation = null;
+                    livre.Quantite--;
                     db.Entry(livre).State = EntityState.Modified;
                    
 
@@ -78,9 +80,22 @@ namespace WebApplication2.Controllers
                 {
                     db.LivreAVendreSet.Remove(livre);
                 }
+                HistoriqueAchat achat = new HistoriqueAchat();
+                achat.Acheteur = livre.Acheteur;
+                achat.dateRecuperation = DateTime.Now.ToShortDateString();
+                achat.CodeIdentification = livre.CodeIdentification;
+                achat.Etat = livre.Etat;
+                achat.Prix = livre.Prix;
+                if (db.HistoriqueAchat.Count() != 0)
+                    achat.Id = db.HistoriqueAchat.Max(i => i.Id) + 1;
+                else
+                    achat.Id = 1;
+                db.HistoriqueAchat.Add(achat);
                 ViewBag.Success = true;
                 db.SaveChanges();
                 List<LivreAVendre> list = new List<LivreAVendre>();
+                var userAdmin = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+                list = db.LivreAVendreSet.Where(i => i.Cooperative == userAdmin.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
                 return View("RecuperationLivre", list);
 
             }
@@ -108,8 +123,66 @@ namespace WebApplication2.Controllers
                
                 return View(list);
             }
-            return View();
+           
         }
+
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult RecuperationLivreConfirmationEtudiant(string etat,string code, string acheteur, string date)
+        {
+            var livre = db.LivreAVendreSet.Where(i => i.CodeIdentification == code && i.Etat == etat).First();
+            if(livre != null)
+            {
+                LivreAVendre livreRecuperer = livre;
+                List<string> myList = livreRecuperer.Acheteur.TrimEnd(';').Split(';').ToList();
+                List<string> myListdate = livreRecuperer.DateReservation.TrimEnd(';').Split(';').ToList();
+                int index = 0;
+                int indexAcheteur = -1;
+                foreach(string ache in myList)
+                {
+                    if (ache == acheteur)                   
+                        indexAcheteur = index;
+                 
+                    index++;
+                }
+                if(indexAcheteur != -1)
+                {
+                    myList.RemoveAt(indexAcheteur);
+                    myListdate.RemoveAt(indexAcheteur);
+                    livreRecuperer.Acheteur = "";
+                    livreRecuperer.DateReservation = "";
+                    foreach(string ache in myList)
+                    {
+                        livreRecuperer.Acheteur += ache + ";";
+                        
+                    }
+                    foreach(string dateres in myListdate)
+                    {
+                        livreRecuperer.DateReservation += dateres + ";";
+                    }
+                    HistoriqueAchat achat = new HistoriqueAchat();
+                    achat.Acheteur = acheteur;
+                    achat.dateRecuperation = DateTime.Now.ToShortDateString();
+                    achat.CodeIdentification = livreRecuperer.CodeIdentification;
+                    achat.Etat = livreRecuperer.Etat;
+                    achat.Prix = livreRecuperer.Prix;
+                    if (db.HistoriqueAchat.Count() != 0)
+                        achat.Id = db.HistoriqueAchat.Max(i => i.Id) + 1;
+                    else
+                        achat.Id = 1;
+                    db.HistoriqueAchat.Add(achat);
+                    livreRecuperer.Quantite--;
+                    db.Entry(livreRecuperer).State = EntityState.Modified;
+                    db.SaveChanges();
+                    ViewBag.Success = true;
+                }
+                
+            }
+            List<LivreAVendre> list = new List<LivreAVendre>();
+            var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+            list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
+            return View("RecuperationLivre",list);
+        }
+
 
         [Authorize]
         public ActionResult ConfirmationPaiement(int id)
@@ -213,7 +286,10 @@ namespace WebApplication2.Controllers
                     UserNotif.CodeIdentification = value;
                     UserNotif.NomEtudiant = user.UserName;
                     UserNotif.Cooperative = user.coopid;
-                    UserNotif.id = db.Notification.Max(i => i.id) + 1;
+                    if(db.Notification.Count() != 0)
+                        UserNotif.id = db.Notification.Max(i => i.id) + 1;
+                    else
+                        UserNotif.id = 1;
                     db.Notification.Add(UserNotif);
                     db.SaveChanges();
                     ViewBag.Success = true;
@@ -531,7 +607,12 @@ namespace WebApplication2.Controllers
                     livres.Cooperative = user.Users.Where(i => i.UserName == User.Identity.Name).FirstOrDefault().coopid;
                     livres.Titre = db.Livres.Where(i=>i.CodeIdentification == livres.CodeIdentification).FirstOrDefault().Nom;
                     livres.NomEtudiant = User.Identity.Name.ToString();
-                    livres.Id = db.LivreInventaire.Max(i => i.Id) + 1;
+                     if (db.LivreInventaire.Count() != 0)
+                       livres.Id = db.LivreInventaire.Max(i => i.Id) + 1;
+                     else
+                         livres.Id = 1;
+
+               
                     livres.Quantite = 1;
                     db.LivreInventaire.Add(livres);
                     db.SaveChanges();

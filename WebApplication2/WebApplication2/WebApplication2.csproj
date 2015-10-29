@@ -259,6 +259,9 @@
     <Compile Include="Models\Coop.cs">
       <DependentUpon>Livres.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HistoriqueAchat.cs">
+      <DependentUpon>Livres.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LivreAVendre.cs">
       <DependentUpon>Livres.tt</DependentUpon>

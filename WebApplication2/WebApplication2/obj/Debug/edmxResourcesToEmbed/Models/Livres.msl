@@ -64,5 +64,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="HistoriqueAchat">
+      <EntityTypeMapping TypeName="LivresModel.HistoriqueAchat">
+        <MappingFragment StoreEntitySet="HistoriqueAchat">
+          <ScalarProperty Name="dateRecuperation" ColumnName="dateRecuperation" />
+          <ScalarProperty Name="Prix" ColumnName="Prix" />
+          <ScalarProperty Name="Etat" ColumnName="Etat" />
+          <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+          <ScalarProperty Name="Acheteur" ColumnName="Acheteur" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

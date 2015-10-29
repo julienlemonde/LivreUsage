@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="LivresModel.Livres" Width="1.5" PointX="5.625" PointY="0.875" IsExpanded="true" />
         <EntityTypeShape EntityType="LivresModel.LivreAVendre" Width="1.5" PointX="7.75" PointY="2.375" />
         <EntityTypeShape EntityType="LivresModel.Notification" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="LivresModel.HistoriqueAchat" Width="1.5" PointX="3.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

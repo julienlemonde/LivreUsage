@@ -14,6 +14,17 @@
           <Property Name="Adresse" Type="nvarchar" MaxLength="50" />
           <Property Name="NomGestionnaire" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="HistoriqueAchat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Acheteur" Type="nvarchar(max)" />
+          <Property Name="CodeIdentification" Type="nvarchar(max)" />
+          <Property Name="Etat" Type="nvarchar(max)" />
+          <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="dateRecuperation" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="LivreAVendreSet">
           <Key>
             <PropertyRef Name="Id" />
@@ -47,8 +58,8 @@
             <PropertyRef Name="CodeIdentification" />
           </Key>
           <Property Name="Id" Type="int" />
-          <Property Name="Nom" Type="nvarchar" MaxLength="50" />
-          <Property Name="Auteur" Type="nvarchar" MaxLength="50" />
+          <Property Name="Nom" Type="nvarchar(max)" />
+          <Property Name="Auteur" Type="nvarchar(max)" />
           <Property Name="NbrPages" Type="nvarchar" MaxLength="50" />
           <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
           <Property Name="IdCoop" Type="int" />
@@ -65,6 +76,7 @@
         </EntityType>
         <EntityContainer Name="LivresModelStoreContainer">
           <EntitySet Name="Coop" EntityType="Self.Coop" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistoriqueAchat" EntityType="Self.HistoriqueAchat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LivreAVendreSet" EntityType="Self.LivreAVendreSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Livres" EntityType="Self.Livres" Schema="dbo" store:Type="Tables" />
@@ -100,8 +112,8 @@
             <PropertyRef Name="CodeIdentification" />
           </Key>
           <Property Name="Id" Type="Int32" />
-          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Auteur" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Nom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Auteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NbrPages" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="IdCoop" Type="Int32" />
@@ -113,6 +125,7 @@
           <EntitySet Name="Livres" EntityType="Self.Livres" />
           <EntitySet Name="LivreAVendreSet" EntityType="LivresModel.LivreAVendre" />
           <EntitySet Name="Notification" EntityType="LivresModel.Notification" />
+          <EntitySet Name="HistoriqueAchat" EntityType="LivresModel.HistoriqueAchat" />
         </EntityContainer>
         <EntityType Name="LivreAVendre">
           <Key>
@@ -138,6 +151,17 @@
           <Property Name="NomEtudiant" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Cooperative" Type="Int32" />
           <Property Name="CodeIdentification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="HistoriqueAchat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Acheteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CodeIdentification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Etat" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="dateRecuperation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -205,6 +229,18 @@
                 <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />
                 <ScalarProperty Name="NomEtudiant" ColumnName="NomEtudiant" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistoriqueAchat">
+            <EntityTypeMapping TypeName="LivresModel.HistoriqueAchat">
+              <MappingFragment StoreEntitySet="HistoriqueAchat">
+                <ScalarProperty Name="dateRecuperation" ColumnName="dateRecuperation" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="Etat" ColumnName="Etat" />
+                <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+                <ScalarProperty Name="Acheteur" ColumnName="Acheteur" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
