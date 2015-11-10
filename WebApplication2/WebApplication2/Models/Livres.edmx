@@ -24,6 +24,7 @@
           <Property Name="Etat" Type="nvarchar(max)" />
           <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
           <Property Name="dateRecuperation" Type="nvarchar(max)" />
+          <Property Name="TypeTransaction" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="LivreAVendreSet">
           <Key>
@@ -162,6 +163,7 @@
           <Property Name="Etat" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="dateRecuperation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TypeTransaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -235,6 +237,7 @@
           <EntitySetMapping Name="HistoriqueAchat">
             <EntityTypeMapping TypeName="LivresModel.HistoriqueAchat">
               <MappingFragment StoreEntitySet="HistoriqueAchat">
+                <ScalarProperty Name="TypeTransaction" ColumnName="TypeTransaction" />
                 <ScalarProperty Name="dateRecuperation" ColumnName="dateRecuperation" />
                 <ScalarProperty Name="Prix" ColumnName="Prix" />
                 <ScalarProperty Name="Etat" ColumnName="Etat" />

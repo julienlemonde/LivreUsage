@@ -20,5 +20,6 @@ namespace WebApplication2.Models
         public string Etat { get; set; }
         public Nullable<decimal> Prix { get; set; }
         public string dateRecuperation { get; set; }
+        public string TypeTransaction { get; set; }
     }
 }

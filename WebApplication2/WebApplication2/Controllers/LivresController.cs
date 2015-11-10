@@ -80,19 +80,8 @@ namespace WebApplication2.Controllers
                 {
                     db.LivreAVendreSet.Remove(livre);
                 }
-                HistoriqueAchat achat = new HistoriqueAchat();
-                achat.Acheteur = livre.Acheteur;
-                achat.dateRecuperation = DateTime.Now.ToShortDateString();
-                achat.CodeIdentification = livre.CodeIdentification;
-                achat.Etat = livre.Etat;
-                achat.Prix = livre.Prix;
-                if (db.HistoriqueAchat.Count() != 0)
-                    achat.Id = db.HistoriqueAchat.Max(i => i.Id) + 1;
-                else
-                    achat.Id = 1;
-                db.HistoriqueAchat.Add(achat);
+                this.AddHistorique(livre, "Achat");
                 ViewBag.Success = true;
-                db.SaveChanges();
                 List<LivreAVendre> list = new List<LivreAVendre>();
                 var userAdmin = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
                 list = db.LivreAVendreSet.Where(i => i.Cooperative == userAdmin.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
@@ -182,7 +171,120 @@ namespace WebApplication2.Controllers
             list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
             return View("RecuperationLivre",list);
         }
+        // get: /Livres/RecuperationLivre
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult AnnulerLivre(int id)
+        {
+            LivreAVendre livre = db.LivreAVendreSet.Where(i => i.Id == id).First();
+            var listeacheteur = livre.Acheteur;
+            List<string> myList = listeacheteur.TrimEnd(';').Split(';').ToList();
+            if (myList.Count == 1)
+            {
+                    livre.Acheteur = null;
+                    livre.DateReservation = null;
+                    db.Entry(livre).State = EntityState.Modified;
+                HistoriqueAchat achat = new HistoriqueAchat();
+                achat.Acheteur = myList[0];
+                achat.dateRecuperation = DateTime.Now.ToShortDateString();
+                achat.CodeIdentification = livre.CodeIdentification;
+                achat.Etat = livre.Etat;
+                achat.Prix = livre.Prix;
+                achat.TypeTransaction = "Remboursement";
+                if (db.HistoriqueAchat.Count() != 0)
+                    achat.Id = db.HistoriqueAchat.Max(i => i.Id) + 1;
+                else
+                    achat.Id = 1;
+                db.HistoriqueAchat.Add(achat);
+                db.SaveChanges();
+                ViewBag.SuccessCancel = true;
 
+            }
+            else
+            {
+                List<LivreAVendre> list = new List<LivreAVendre>(myList.Count());
+
+                string[] dates = livre.DateReservation.Split(';');
+
+                int index = 0;
+                foreach (string str in myList)
+                {
+                    LivreAVendre livrevendu = new LivreAVendre();
+                    livrevendu.Etat = livre.Etat;
+                    livrevendu.CodeIdentification = livre.CodeIdentification;
+                    livrevendu.Titre = livre.Titre;
+                    livrevendu.Prix = livre.Prix;
+                    livrevendu.Cooperative = livre.Cooperative;
+                    livrevendu.DateReservation = dates[index];
+                    livrevendu.Quantite = 1;
+                    livrevendu.Acheteur = str;
+                    list.Add(livrevendu);
+                    index++;
+                }
+
+                return View("RecuperationLivreConfirmation",list);
+            }
+
+            List<LivreAVendre> listNonNull = new List<LivreAVendre>();
+            var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+            listNonNull = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
+            return View("RecuperationLivre", listNonNull);
+        }
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult AnnulerLivreConfirmation(string etat, string code, string acheteur, string date)
+        {
+            var livre = db.LivreAVendreSet.Where(i => i.CodeIdentification == code && i.Etat == etat).First();
+            if (livre != null)
+            {
+                LivreAVendre livreRecuperer = livre;
+                List<string> myList = livreRecuperer.Acheteur.TrimEnd(';').Split(';').ToList();
+                List<string> myListdate = livreRecuperer.DateReservation.TrimEnd(';').Split(';').ToList();
+                int index = 0;
+                int indexAcheteur = -1;
+                foreach (string ache in myList)
+                {
+                    if (ache == acheteur)
+                        indexAcheteur = index;
+
+                    index++;
+                }
+                if (indexAcheteur != -1)
+                {
+                    myList.RemoveAt(indexAcheteur);
+                    myListdate.RemoveAt(indexAcheteur);
+                    livreRecuperer.Acheteur = "";
+                    livreRecuperer.DateReservation = "";
+                    foreach (string ache in myList)
+                    {
+                        livreRecuperer.Acheteur += ache + ";";
+
+                    }
+                    foreach (string dateres in myListdate)
+                    {
+                        livreRecuperer.DateReservation += dateres + ";";
+                    }
+                    db.Entry(livreRecuperer).State = EntityState.Modified;
+                   
+                    HistoriqueAchat achat = new HistoriqueAchat();
+                    achat.Acheteur = acheteur;
+                    achat.dateRecuperation = DateTime.Now.ToShortDateString();
+                    achat.CodeIdentification = livreRecuperer.CodeIdentification;
+                    achat.Etat = livreRecuperer.Etat;
+                    achat.Prix = livreRecuperer.Prix;
+                    achat.TypeTransaction = "Remboursement";
+                    if (db.HistoriqueAchat.Count() != 0)
+                        achat.Id = db.HistoriqueAchat.Max(i => i.Id) + 1;
+                    else
+                        achat.Id = 1;
+                    db.HistoriqueAchat.Add(achat);
+                    db.SaveChanges();
+                    ViewBag.SuccessCancel = true;
+                }
+            }
+                    List<LivreAVendre> listNonNull = new List<LivreAVendre>();
+            var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+            listNonNull = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
+            return View("RecuperationLivre", listNonNull);
+        }
 
         [Authorize]
         public ActionResult ConfirmationPaiement(int id)
@@ -762,6 +864,22 @@ namespace WebApplication2.Controllers
             }
             
 
+        }
+        private void AddHistorique(LivreAVendre livre, String TypeTransaction)
+        {
+            HistoriqueAchat achat = new HistoriqueAchat();
+            achat.Acheteur = livre.Acheteur;
+            achat.dateRecuperation = DateTime.Now.ToShortDateString();
+            achat.CodeIdentification = livre.CodeIdentification;
+            achat.Etat = livre.Etat;
+            achat.Prix = livre.Prix;
+            achat.TypeTransaction = TypeTransaction;
+            if (db.HistoriqueAchat.Count() != 0)
+                achat.Id = db.HistoriqueAchat.Max(i => i.Id) + 1;
+            else
+                achat.Id = 1;
+            db.HistoriqueAchat.Add(achat);
+            db.SaveChanges();
         }
         private void RetirerLivreInventaire(LivreInventaire livres)
         {

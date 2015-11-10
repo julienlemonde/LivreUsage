@@ -12,6 +12,12 @@
         <strong>Succès!</strong> La transaction a été complété avec succèss. Les informations relativent à cette transaction ont été sauvegardés dans le système.
     </div>
 }
+@if (ViewBag.SuccessCancel == true)
+{
+    <div class="alert alert-success fade in">
+        <strong>Succès!</strong> La transaction a été annulé avec succèss. Le compte Paypal utilisé pour cette transaction sera remboursé.
+    </div>
+}
 
     
 <table class="table">
@@ -93,8 +99,10 @@
                 </td>
 
                 <td>
-                    @Html.ActionLink("Confirmer la remise du livre", "RecuperationLivreConfirmation", new { id = item.Id}, new { @class = "btn btn-warning" })
-                    
+                    <div>
+                        @Html.ActionLink("Confirmer", "RecuperationLivreConfirmation", new { id = item.Id }, new { @class = "btn btn-warning" })
+                        @Html.ActionLink("X", "AnnulerLivre", new { id = item.Id }, new { @class = "btn btn-danger" })
+                    </div>
                 </td>
             </tr>
         }

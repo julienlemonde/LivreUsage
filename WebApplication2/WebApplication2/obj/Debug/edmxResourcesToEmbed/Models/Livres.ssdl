@@ -19,6 +19,7 @@
     <Property Name="Etat" Type="nvarchar(max)" />
     <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
     <Property Name="dateRecuperation" Type="nvarchar(max)" />
+    <Property Name="TypeTransaction" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="LivreAVendreSet">
     <Key>

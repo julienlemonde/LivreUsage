@@ -69,8 +69,8 @@
             </td>
 
             <td>
-                @Html.ActionLink("Confirmer la remise du livre", "RecuperationLivreConfirmationEtudiant", new { etat = item.Etat,code = item.CodeIdentification, acheteur = item.Acheteur, date = item.DateReservation}, new { @class = "btn btn-warning" })
-
+                @Html.ActionLink("Confirmer", "RecuperationLivreConfirmationEtudiant", new { etat = item.Etat,code = item.CodeIdentification, acheteur = item.Acheteur, date = item.DateReservation}, new { @class = "btn btn-warning" })
+                @Html.ActionLink("X", "AnnulerLivreConfirmation", new { etat = item.Etat, code = item.CodeIdentification, acheteur = item.Acheteur, date = item.DateReservation }, new { @class = "btn btn-danger" })
             </td>
         </tr>
     }
