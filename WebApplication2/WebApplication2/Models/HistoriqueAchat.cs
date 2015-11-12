@@ -21,5 +21,6 @@ namespace WebApplication2.Models
         public Nullable<decimal> Prix { get; set; }
         public string dateRecuperation { get; set; }
         public string TypeTransaction { get; set; }
+        public string Cooperative { get; set; }
     }
 }

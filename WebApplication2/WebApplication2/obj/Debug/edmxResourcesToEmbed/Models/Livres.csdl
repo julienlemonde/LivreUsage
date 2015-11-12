@@ -77,5 +77,6 @@
     <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
     <Property Name="dateRecuperation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="TypeTransaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Cooperative" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

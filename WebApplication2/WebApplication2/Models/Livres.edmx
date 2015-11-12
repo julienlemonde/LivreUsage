@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Coop">
           <Key>
             <PropertyRef Name="Nom" />
@@ -25,6 +25,7 @@
           <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
           <Property Name="dateRecuperation" Type="nvarchar(max)" />
           <Property Name="TypeTransaction" Type="nvarchar(max)" />
+          <Property Name="Cooperative" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="LivreAVendreSet">
           <Key>
@@ -164,6 +165,7 @@
           <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="dateRecuperation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TypeTransaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cooperative" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -237,6 +239,7 @@
           <EntitySetMapping Name="HistoriqueAchat">
             <EntityTypeMapping TypeName="LivresModel.HistoriqueAchat">
               <MappingFragment StoreEntitySet="HistoriqueAchat">
+                <ScalarProperty Name="Cooperative" ColumnName="Cooperative" />
                 <ScalarProperty Name="TypeTransaction" ColumnName="TypeTransaction" />
                 <ScalarProperty Name="dateRecuperation" ColumnName="dateRecuperation" />
                 <ScalarProperty Name="Prix" ColumnName="Prix" />

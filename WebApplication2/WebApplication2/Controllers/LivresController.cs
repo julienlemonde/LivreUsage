@@ -13,6 +13,8 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication2.Models;
+using Twilio;
+
 
 namespace WebApplication2.Controllers
 {
@@ -153,6 +155,7 @@ namespace WebApplication2.Controllers
                     achat.dateRecuperation = DateTime.Now.ToShortDateString();
                     achat.CodeIdentification = livreRecuperer.CodeIdentification;
                     achat.Etat = livreRecuperer.Etat;
+                    achat.Cooperative = livreRecuperer.Cooperative.ToString();
                     achat.Prix = livreRecuperer.Prix;
                     if (db.HistoriqueAchat.Count() != 0)
                         achat.Id = db.HistoriqueAchat.Max(i => i.Id) + 1;
@@ -170,6 +173,75 @@ namespace WebApplication2.Controllers
             var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
             list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
             return View("RecuperationLivre",list);
+        }
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult ExpedierLivre(string search1, string search2, string search3)
+        {
+
+            var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+            List<LivreAVendre> list = new List<LivreAVendre>();
+            if (string.IsNullOrEmpty(search1) && string.IsNullOrEmpty(search2) && string.IsNullOrEmpty(search3))
+            {
+                List<LivreAVendre> nouveau = new List<LivreAVendre>();
+                list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && (i.Acheteur != "" && i.Acheteur != null)).ToList();
+                int count = list.Count();
+                for(int i = 0;i< count;i++)
+                {
+                    List<string> myList = list[i].Acheteur.TrimEnd(';').Split(';').ToList();
+                    if(myList.Count != 1)
+                    {
+                            string[] dates = list[i].DateReservation.Split(';');
+
+                            int index = 0;
+                            foreach (string str in myList)
+                            {
+                                var acheteur = dbContext.Users.Where(t => t.UserName == str).FirstOrDefault();
+                                if (acheteur.coopid != user.coopid)
+                                {
+                                    LivreAVendre livrevendu = new LivreAVendre();
+                                    livrevendu.Etat = list[i].Etat;
+                                    livrevendu.CodeIdentification = list[i].CodeIdentification;
+                                    livrevendu.Titre = list[i].Titre;
+                                    livrevendu.Prix = list[i].Prix;
+                                    livrevendu.Id = list[i].Id;
+                                    livrevendu.Auteur = list[i].Auteur;
+                                    livrevendu.Proprietaire = list[i].Proprietaire;
+                                    livrevendu.Cooperative = list[i].Cooperative;
+                                    livrevendu.DateReservation = dates[index];
+                                    livrevendu.Quantite = 1;
+                                    livrevendu.Acheteur = str;
+                                    nouveau.Add(livrevendu);
+                                }
+                                index++;
+                            }
+                        }
+                    else
+                    {
+                        var acheteur = dbContext.Users.Where(t => t.UserName == myList[0]).First();
+                        if(acheteur.coopid != list[i].Cooperative)
+                        {
+                            nouveau.Add(list[i]);
+                        }
+                    }
+                   
+                }
+               
+              
+                return View(nouveau);
+
+            }
+            list = db.LivreAVendreSet.Where(i => i.Cooperative == user.coopid && i.Acheteur.Contains(search1) && i.CodeIdentification.Contains(search2) && i.Titre.Contains(search3) && (i.Acheteur != "" && i.Acheteur != null)).ToList();
+            return View(list);
+
+
+        }
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult ExpedierLivreConfirm(int id)
+        {
+
+            return View();
+
+
         }
         // get: /Livres/RecuperationLivre
         [Authorize(Roles = "Gestionnaire")]
@@ -380,9 +452,9 @@ namespace WebApplication2.Controllers
         {
             if(value != null || value != "")
             {
-                Notification UserNotif = new Notification();
+                WebApplication2.Models.Notification UserNotif = new WebApplication2.Models.Notification();
                 var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
-                Notification notiftest = db.Notification.Where(i => i.CodeIdentification == value && i.NomEtudiant == User.Identity.Name).FirstOrDefault();
+                WebApplication2.Models.Notification notiftest = db.Notification.Where(i => i.CodeIdentification == value && i.NomEtudiant == User.Identity.Name).FirstOrDefault();
                 if(notiftest == null)
                 {
                     UserNotif.CodeIdentification = value;
@@ -526,11 +598,20 @@ namespace WebApplication2.Controllers
                     if (output != null)
                     {
                         search.CodeIdentification = livres.CodeIdentification;
-                        search.Auteur = output.VolumeInfo.Authors[0];
-                        search.NbrPages = output.VolumeInfo.PageCount.ToString();
-                        search.Nom = output.VolumeInfo.Title;
-                        ViewBag.Code = livres.CodeIdentification;
-                        return RedirectToAction("EditGoogle", "Livres", livres = search);
+
+                        if( output.VolumeInfo.Authors != null)
+                        {
+                            search.Auteur = output.VolumeInfo.Authors[0];
+                            search.NbrPages = output.VolumeInfo.PageCount.ToString();
+                            search.Nom = output.VolumeInfo.Title;
+                            ViewBag.Code = livres.CodeIdentification;
+                            return RedirectToAction("EditGoogle", "Livres", livres = search);
+                        }
+                        else
+                        {
+                            ViewBag.Code = livres.CodeIdentification;
+                            return RedirectToAction("EditGoogle", "Livres", livres = search);
+                        }
                       }
                 else
                     {
@@ -767,9 +848,11 @@ namespace WebApplication2.Controllers
                 if (livretest != null)
                     livres.Id = livretest.Id;
                 this.AjouterLivreAVendre(livres);
-               // this.RetirerLivreInventaire(livres);
+                this.RetirerLivreInventaire(livres);
                 this.SendEmail(livres.NomEtudiant, "Votre livre a bien été ajouter au systeme de vente","Ajout livre");
-                List<Notification> listeNotif = db.Notification.Where(i => i.CodeIdentification == livres.CodeIdentification).ToList();
+                var user = dbContext.Users.Where(i => i.UserName == livres.NomEtudiant).FirstOrDefault();
+                this.SendSMS(user.Telephone);
+                List<WebApplication2.Models.Notification> listeNotif = db.Notification.Where(i => i.CodeIdentification == livres.CodeIdentification).ToList();
                 for (int i = 0; i < listeNotif.Count(); i++)
                 {
                     this.SendEmail(listeNotif[i].NomEtudiant, "Le livre que vous chercher a été rajouter au système", "L'attente est terminé");
@@ -873,6 +956,7 @@ namespace WebApplication2.Controllers
             achat.CodeIdentification = livre.CodeIdentification;
             achat.Etat = livre.Etat;
             achat.Prix = livre.Prix;
+            achat.Cooperative = livre.Cooperative.ToString();
             achat.TypeTransaction = TypeTransaction;
             if (db.HistoriqueAchat.Count() != 0)
                 achat.Id = db.HistoriqueAchat.Max(i => i.Id) + 1;
@@ -912,6 +996,16 @@ namespace WebApplication2.Controllers
             mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
             client.Send(mm);
+        }
+
+        public void SendSMS(string userPhone)
+        {
+            string Twilio_Account_SID = "ACa6fe6b5607b7f1f3be8b5158d30d9dee";
+            string Twilio_Auth_Token = "ebf640051bfb7acc88f3b65cbc4d996f";
+            string From_Number = "5147001808";
+            TwilioRestClient twilioClient = new TwilioRestClient(Twilio_Account_SID, Twilio_Auth_Token);
+            twilioClient.SendMessage(From_Number, userPhone, "L'état de votre livre a bien été confirmé par le gestionnaire de la Coop.");
+            System.Diagnostics.Debug.WriteLine("SMS envoyé à : " + userPhone);
         }
 
     }

@@ -464,3 +464,8 @@ C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\Zlib.P
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\EntityFramework.resources.dll
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\fr\EntityFramework.SqlServer.resources.dll
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csproj.App.config
+C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\RestSharp.dll
+C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\Twilio.Api.dll
+C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\RestSharp.xml
+C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\Twilio.Api.pdb
+C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\Twilio.Api.xml

@@ -1,4 +1,4 @@
-﻿// La génération de code T4 est activée pour le modèle 'C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\Models\Livres.edmx'. 
+﻿// La génération de code T4 est activée pour le modèle 'C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\Models\Livres.edmx'. 
 // Pour activer la génération de code héritée, définissez la valeur de la propriété
 // du concepteur 'Stratégie de génération de code' sur 'ObjectContext hérité'. Cette propriété est disponible dans la fenêtre Propriétés lorsque le modèle
 //  est ouvert dans le concepteur.
