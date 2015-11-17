@@ -217,7 +217,8 @@ namespace WebApplication2.Controllers
                         }
                     else
                     {
-                        var acheteur = dbContext.Users.Where(t => t.UserName == myList[0]).First();
+                        string Nom = myList[0];
+                        var acheteur = dbContext.Users.Where(t => t.UserName == Nom).First();
                         if(acheteur.coopid != list[i].Cooperative)
                         {
                             nouveau.Add(list[i]);
@@ -242,6 +243,119 @@ namespace WebApplication2.Controllers
             return View();
 
 
+        }
+        [Authorize(Roles ="Gestionnaire")]
+        public ActionResult ExpedierLivreChoix(string etat, string code, string acheteur, string date)
+        {
+            string nomAcheteur = acheteur.TrimEnd(';');
+            var user = dbContext.Users.Where(i => i.UserName == nomAcheteur).First();
+            var livre = db.LivreAVendreSet.Where(i => i.CodeIdentification == code && i.Etat == etat && (i.Acheteur != "" && i.Acheteur != null)).First();
+            if (livre != null)
+            {
+                LivreAVendre livreRecuperer = livre;
+                List<string> myList = livreRecuperer.Acheteur.TrimEnd(';').Split(';').ToList();
+                List<string> myListdate = livreRecuperer.DateReservation.TrimEnd(';').Split(';').ToList();
+                int index = 0;
+                int indexAcheteur = -1;
+                foreach (string ache in myList)
+                {
+                    if (ache == acheteur.TrimEnd(';'))
+                        indexAcheteur = index;
+
+                    index++;
+                }
+                if (indexAcheteur != -1)
+                {
+                    myList.RemoveAt(indexAcheteur);
+                    myListdate.RemoveAt(indexAcheteur);
+                    livreRecuperer.Acheteur = "";
+                    livreRecuperer.DateReservation = "";
+                    foreach (string ache in myList)
+                    {
+                        livreRecuperer.Acheteur += ache + ";";
+
+                    }
+                    foreach (string dateres in myListdate)
+                    {
+                        livreRecuperer.DateReservation += dateres + ";";
+                    }
+                    Expedier Transfert = new Expedier();
+                    Transfert.NomEtudiant = acheteur;
+                    Transfert.CodeIdentification = livreRecuperer.CodeIdentification;
+                    Transfert.Etat = livreRecuperer.Etat;
+                    Transfert.CooperativeProvenance = livreRecuperer.Cooperative.ToString();
+                    Transfert.CooperativeEtudiant = user.coopid.ToString();
+                    Transfert.Prix = livreRecuperer.Prix;
+                    if (db.Expedier.Count() != 0)
+                        Transfert.Id = db.Expedier.Max(i => i.Id) + 1;
+                    else
+                        Transfert.Id = 1;
+                    db.Expedier.Add(Transfert);
+                    if(livreRecuperer.Acheteur == "" && livreRecuperer.Quantite == 1)
+                    {
+                        db.Entry(livreRecuperer).State = EntityState.Deleted;
+                    }
+                    else
+                    {
+                        livreRecuperer.Quantite--;
+                        db.Entry(livreRecuperer).State = EntityState.Modified;
+                    }
+                   
+                    
+                    db.SaveChanges();
+                    ViewBag.Success = true;
+                }
+
+            }
+            List<LivreAVendre> listNonNull = new List<LivreAVendre>();
+            return View("ExpedierLivre", listNonNull);
+        }
+ 
+        [Authorize(Roles = "Gestionnaire")]
+        public ActionResult LivraisonLivre(string etat,string code ,string acheteur,string coop, string prix)
+        {
+            List<Expedier> list = new List<Expedier>();
+            var user = dbContext.Users.Where(i => i.UserName == User.Identity.Name).First();
+            if (acheteur == null)
+            {
+                
+                list = db.Expedier.Where(i => i.CooperativeEtudiant == user.coopid.ToString()).ToList();
+            }
+            else
+            {
+                int coopId = int.Parse(coop);
+                LivreAVendre livre = db.LivreAVendreSet.Where(i => i.Etat == etat && i.CodeIdentification == code && i.Cooperative == coopId).FirstOrDefault();
+                if(livre == null)
+                {
+                    LivreAVendre livrerecu = new LivreAVendre();
+                    Livres livreInfo = db.Livres.Where(i => i.CodeIdentification == code).First();
+                    livrerecu.Acheteur = acheteur+";";
+                    livrerecu.Etat = etat;
+                    livrerecu.CodeIdentification = code;
+                    livrerecu.Auteur = livreInfo.Auteur;
+                    livrerecu.Cooperative = user.coopid;
+                    livrerecu.DateReservation = (DateTime.Now.ToShortDateString() + ";");
+                    prix = prix.Replace('.', ',');
+                    livrerecu.Prix = decimal.Parse(prix);
+                    livrerecu.Quantite = 1;
+                    livrerecu.Titre = livreInfo.Nom;
+
+                    db.LivreAVendreSet.Add(livrerecu);
+                    db.SaveChanges();
+
+                }
+                else
+                {
+                    livre.Acheteur += (User.Identity.Name + ";");
+                    livre.DateReservation += (DateTime.Now.ToShortDateString() + ";");
+                    livre.Quantite++;
+                    db.Entry(livre).State = EntityState.Modified;
+
+                    db.SaveChanges();
+                }
+            }
+            
+            return View(list);
         }
         // get: /Livres/RecuperationLivre
         [Authorize(Roles = "Gestionnaire")]

@@ -17,8 +17,9 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Administrer les livres<span class="caret"></span></a>
         <ul class="dropdown-menu">
             <li>@Html.ActionLink("Réception de livres", "RemiseLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Réception de livres" })</li>
-            <li><a href="#">@Html.ActionLink("Récupération de livres", "RecuperationLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Réception de livres" })</a></li>
-            <li><a href="#">@Html.ActionLink("Expedier un livre", "ExpedierLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Expedition de livre de livres" })</a></li>
+            <li><a href="#">@Html.ActionLink("Récupération de livres", "RecuperationLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Récupération de livres" })</a></li>
+            <li><a href="#">@Html.ActionLink("Expedier un livre", "ExpedierLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Expedition de livres" })</a></li>
+            <li><a href="#">@Html.ActionLink("Voir les livres en livraison", "LivraisonLivre", "Livres", routeValues: null, htmlAttributes: new { title = "Livre en livraison" })</a></li>
         </ul>
     </li>
                

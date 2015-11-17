@@ -469,3 +469,8 @@ C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\Twilio
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\RestSharp.xml
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\Twilio.Api.pdb
 C:\Users\am36790\Downloads\LivreUsage\WebApplication2\WebApplication2\bin\Twilio.Api.xml
+C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\bin\RestSharp.dll
+C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\bin\Twilio.Api.dll
+C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\bin\RestSharp.xml
+C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\bin\Twilio.Api.pdb
+C:\Users\julien\Documents\GitHub\LivreUsage\WebApplication2\WebApplication2\bin\Twilio.Api.xml

@@ -23,7 +23,7 @@
 <table class="table">
     <tr>
         <th>
-            <form method="get" action="@Url.Action("RecuperationLivre", "Livres")">
+            <form method="get" action="@Url.Action("ExpedierLivre", "Livres")">
                 <div class="col-xs-1">
                     <label for="search">Recherche:</label>
                     </div>
@@ -100,7 +100,7 @@
 
                 <td>
                     <div>
-                        @Html.ActionLink("Expédier", "RecuperationLivreConfirmation", new { id = item.Id }, new { @class = "btn btn-warning" })
+                        @Html.ActionLink("Expédier", "ExpedierLivreChoix", new { etat = item.Etat,code = item.CodeIdentification, acheteur = item.Acheteur, date = item.DateReservation}, new { @class = "btn btn-warning" })
                     </div>
                 </td>
             </tr>

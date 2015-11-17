@@ -31,5 +31,6 @@ namespace WebApplication2.Models
         public virtual DbSet<LivreAVendre> LivreAVendreSet { get; set; }
         public virtual DbSet<Notification> Notification { get; set; }
         public virtual DbSet<HistoriqueAchat> HistoriqueAchat { get; set; }
+        public virtual DbSet<Expedier> Expedier { get; set; }
     }
 }

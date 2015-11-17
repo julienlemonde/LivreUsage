@@ -229,6 +229,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CoopsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ExpedierController.cs" />
     <Compile Include="Controllers\LivresController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -265,6 +266,9 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BookSearch.cs" />
     <Compile Include="Models\Coop.cs">
+      <DependentUpon>Livres.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Expedier.cs">
       <DependentUpon>Livres.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HistoriqueAchat.cs">
@@ -393,9 +397,11 @@
     <Content Include="Views\Livres\RecuperationLivre.cshtml" />
     <Content Include="Views\Livres\RecuperationLivreConfirmation.cshtml" />
     <Content Include="Views\Livres\ExpedierLivre.cshtml" />
+    <Content Include="Views\Livres\LivraisonLivre.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\LivreAVendres\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

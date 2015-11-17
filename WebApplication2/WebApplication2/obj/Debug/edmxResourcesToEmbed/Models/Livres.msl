@@ -78,5 +78,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Expedier">
+      <EntityTypeMapping TypeName="LivresModel.Expedier">
+        <MappingFragment StoreEntitySet="Expedier">
+          <ScalarProperty Name="Prix" ColumnName="Prix" />
+          <ScalarProperty Name="Etat" ColumnName="Etat" />
+          <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+          <ScalarProperty Name="CooperativeProvenance" ColumnName="CooperativeProvenance" />
+          <ScalarProperty Name="CooperativeEtudiant" ColumnName="CooperativeEtudiant" />
+          <ScalarProperty Name="NomEtudiant" ColumnName="NomEtudiant" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

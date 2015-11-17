@@ -20,5 +20,7 @@ namespace WebApplication2.Models
                 .Property(e => e.Nom)
                 .IsUnicode(false);
         }
+
+        public System.Data.Entity.DbSet<WebApplication2.Models.LivreAVendre> LivreAVendres { get; set; }
     }
 }

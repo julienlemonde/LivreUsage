@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LivresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Coop">
           <Key>
             <PropertyRef Name="Nom" />
@@ -13,6 +13,18 @@
           <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Adresse" Type="nvarchar" MaxLength="50" />
           <Property Name="NomGestionnaire" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Expedier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="NomEtudiant" Type="nvarchar(max)" />
+          <Property Name="CooperativeEtudiant" Type="nvarchar(max)" />
+          <Property Name="CooperativeProvenance" Type="nvarchar(max)" />
+          <Property Name="CodeIdentification" Type="nvarchar(max)" />
+          <Property Name="Etat" Type="nvarchar(max)" />
+          <Property Name="Prix" Type="decimal" Precision="5" Scale="2" />
         </EntityType>
         <EntityType Name="HistoriqueAchat">
           <Key>
@@ -78,6 +90,7 @@
         </EntityType>
         <EntityContainer Name="LivresModelStoreContainer">
           <EntitySet Name="Coop" EntityType="Self.Coop" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Expedier" EntityType="Self.Expedier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistoriqueAchat" EntityType="Self.HistoriqueAchat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LivreAVendreSet" EntityType="Self.LivreAVendreSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LivreInventaire" EntityType="Self.LivreInventaire" Schema="dbo" store:Type="Tables" />
@@ -128,6 +141,7 @@
           <EntitySet Name="LivreAVendreSet" EntityType="LivresModel.LivreAVendre" />
           <EntitySet Name="Notification" EntityType="LivresModel.Notification" />
           <EntitySet Name="HistoriqueAchat" EntityType="LivresModel.HistoriqueAchat" />
+          <EntitySet Name="Expedier" EntityType="LivresModel.Expedier" />
         </EntityContainer>
         <EntityType Name="LivreAVendre">
           <Key>
@@ -166,6 +180,18 @@
           <Property Name="dateRecuperation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TypeTransaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Cooperative" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Expedier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="NomEtudiant" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CooperativeEtudiant" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CooperativeProvenance" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CodeIdentification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Etat" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Prix" Type="Decimal" Precision="5" Scale="2" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -246,6 +272,19 @@
                 <ScalarProperty Name="Etat" ColumnName="Etat" />
                 <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
                 <ScalarProperty Name="Acheteur" ColumnName="Acheteur" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Expedier">
+            <EntityTypeMapping TypeName="LivresModel.Expedier">
+              <MappingFragment StoreEntitySet="Expedier">
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="Etat" ColumnName="Etat" />
+                <ScalarProperty Name="CodeIdentification" ColumnName="CodeIdentification" />
+                <ScalarProperty Name="CooperativeProvenance" ColumnName="CooperativeProvenance" />
+                <ScalarProperty Name="CooperativeEtudiant" ColumnName="CooperativeEtudiant" />
+                <ScalarProperty Name="NomEtudiant" ColumnName="NomEtudiant" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

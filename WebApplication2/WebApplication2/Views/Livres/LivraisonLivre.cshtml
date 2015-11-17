@@ -1,0 +1,78 @@
+﻿@model IEnumerable<WebApplication2.Models.Expedier>
+
+@{
+    ViewBag.Title = "Liste de livre en livraison";
+}
+
+
+<h2>Liste de livre en livraison</h2>
+@if (ViewBag.Success == true)
+{
+    <div class="alert alert-success fade in">
+        <strong>Succès!</strong> La transaction a été complété avec succèss. Les informations relativent à cette transaction ont été sauvegardés dans le système.
+    </div>
+}
+@if (ViewBag.SuccessCancel == true)
+{
+    <div class="alert alert-success fade in">
+        <strong>Succès!</strong> La transaction a été annulé avec succèss. Le compte Paypal utilisé pour cette transaction sera remboursé.
+    </div>
+}
+
+    
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomEtudiant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodeIdentification)
+            </th>           
+            <th>
+                @Html.DisplayNameFor(model => model.Etat)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CooperativeEtudiant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CooperativeProvenance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prix)
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomEtudiant)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodeIdentification)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Etat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CooperativeEtudiant)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CooperativeProvenance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prix)
+                </td>
+                <td>
+                    <div>
+                        @Html.ActionLink("Réception", "LivraisonLivre", new { etat = item.Etat,code = item.CodeIdentification, acheteur = item.NomEtudiant, coop = item.CooperativeEtudiant, prix = item.Prix}, new { @class = "btn btn-warning" })
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
